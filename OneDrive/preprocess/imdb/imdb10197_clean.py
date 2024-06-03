@@ -21,7 +21,7 @@ else:
 
 
 movie_actor_path = os.path.join(current_dir, 'cleaned', 'movie_actor.txt')
-m_a = np.genfromtxt(movie_actor_path, delimiter='\t', dtype=np.str)
+m_a = np.genfromtxt(movie_actor_path, delimiter='\t', dtype=str)
 print('movie_actor shape: ', m_a.shape)
 a_raw_ids = m_a[:,1]
 a_unique_raw_ids = np.unique(a_raw_ids)
@@ -35,7 +35,7 @@ sp_A_m_a = sp.coo_matrix((data, (row, col)), shape=(m_num, a_num))
 
 
 movie_country_path = os.path.join(current_dir, 'cleaned', 'movie_country.txt')
-m_c = np.genfromtxt(movie_country_path, delimiter='\t', dtype=np.str)
+m_c = np.genfromtxt(movie_country_path, delimiter='\t', dtype=str)
 print('movie_country shape: ', m_c.shape)
 c_raw_ids = m_c[:,1]
 c_unique_raw_ids = np.unique(c_raw_ids)
@@ -49,7 +49,7 @@ sp_A_m_c = sp.coo_matrix((data, (row, col)), shape=(m_num, c_num))
 
 
 movie_director_path = os.path.join(current_dir, 'cleaned', 'movie_director.txt')
-m_d = np.genfromtxt(movie_director_path, delimiter='\t', dtype=np.str)
+m_d = np.genfromtxt(movie_director_path, delimiter='\t', dtype=str)
 print('movie_director shape: ', m_d.shape)
 d_raw_ids = m_d[:,1]
 d_unique_raw_ids = np.unique(d_raw_ids)
@@ -90,7 +90,7 @@ sp_A_m_u = sp.coo_matrix((data, (row, col)), shape=(m_num, u_num))
 
 
 movie_genre_path = os.path.join(current_dir, 'cleaned', 'movie_genre.txt')
-m_g = np.genfromtxt(movie_genre_path, delimiter='\t', dtype=np.str)
+m_g = np.genfromtxt(movie_genre_path, delimiter='\t', dtype=str)
 print('movie_genre shape: ', m_g.shape)
 g_raw_ids = m_g[:,1]
 g_unique_raw_ids = np.unique(g_raw_ids)
