@@ -92,89 +92,89 @@ def accuracy(output, labels):
 
 
 def load_imdb3228(train_percent):
-	# np.random.seed(0)
+	np.random.seed(0)
 
-	# path='./data/imdb10197/'
-	# dataset='imdb10197'
-	# print('imdb3228', train_percent)
+	path='./data/imdb10197/'
+	dataset='imdb10197'
+	print('imdb3228', train_percent)
 	
-	# with open('{}{}_movie_feature.pkl'.format(path, dataset), 'rb') as in_file:
-	# 	m_ft = pickle.load(in_file)
+	with open('{}{}_movie_feature.pkl'.format(path, dataset), 'rb') as in_file:
+		m_ft = pickle.load(in_file)
 
-	# with open('{}{}_sp_adj_mats.pkl'.format(path, dataset), 'rb') as in_file:
-	# 	(sp_A_m_a, sp_A_m_c, sp_A_m_d, sp_A_m_t, sp_A_m_u, sp_A_m_g) = pickle.load(in_file)
+	with open('{}{}_sp_adj_mats.pkl'.format(path, dataset), 'rb') as in_file:
+		(sp_A_m_a, sp_A_m_c, sp_A_m_d, sp_A_m_t, sp_A_m_u, sp_A_m_g) = pickle.load(in_file)
 
-	# A_m_g = sp_A_m_g.toarray()
-	# A_m_a = sp_A_m_a.tocsr()
-	# A_m_u = sp_A_m_u.tocsr()
-	# A_m_d = sp_A_m_d.tocsr()
+	A_m_g = sp_A_m_g.toarray()
+	A_m_a = sp_A_m_a.tocsr()
+	A_m_u = sp_A_m_u.tocsr()
+	A_m_d = sp_A_m_d.tocsr()
 	
-	# idx_m = np.where(A_m_g.sum(1)==1)[0]
-	# idx_g = np.array([4,6,7,10])
-	# idx_m = idx_m[np.where(A_m_g[idx_m][:,idx_g].sum(1) == 1)[0]]
+	idx_m = np.where(A_m_g.sum(1)==1)[0]
+	idx_g = np.array([4,6,7,10])
+	idx_m = idx_m[np.where(A_m_g[idx_m][:,idx_g].sum(1) == 1)[0]]
 	
-	# idx_a = np.where(A_m_a[idx_m].sum(0) > 0)[1]
-	# idx_u = np.where(A_m_u[idx_m].sum(0) > 0)[1]
-	# idx_d = np.where(A_m_d[idx_m].sum(0) > 0)[1]
+	idx_a = np.where(A_m_a[idx_m].sum(0) > 0)[1]
+	idx_u = np.where(A_m_u[idx_m].sum(0) > 0)[1]
+	idx_d = np.where(A_m_d[idx_m].sum(0) > 0)[1]
 
-	# A_m_a = A_m_a[idx_m][:,idx_a]
-	# A_m_u = A_m_u[idx_m][:,idx_u]
-	# A_m_d = A_m_d[idx_m][:,idx_d]
-	# A_m_g = A_m_g[idx_m][:,idx_g]
+	A_m_a = A_m_a[idx_m][:,idx_a]
+	A_m_u = A_m_u[idx_m][:,idx_u]
+	A_m_d = A_m_d[idx_m][:,idx_d]
+	A_m_g = A_m_g[idx_m][:,idx_g]
 
-	# label = {}
-	# m_label = torch.LongTensor(A_m_g.argmax(1))
-	# rand_idx = np.random.permutation(m_label.shape[0])
-	# val_percent =  (1.0 - train_percent)/2
-	# idx_train_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*0.0): int(m_label.shape[0]*train_percent)])
-	# idx_val_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*train_percent): int(m_label.shape[0]*(train_percent + val_percent))])
-	# idx_test_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*(train_percent + val_percent)): int(m_label.shape[0]*1.0)])
-	# label['m'] = [m_label, idx_train_m, idx_val_m, idx_test_m]
+	label = {}
+	m_label = torch.LongTensor(A_m_g.argmax(1))
+	rand_idx = np.random.permutation(m_label.shape[0])
+	val_percent =  (1.0 - train_percent)/2
+	idx_train_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*0.0): int(m_label.shape[0]*train_percent)])
+	idx_val_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*train_percent): int(m_label.shape[0]*(train_percent + val_percent))])
+	idx_test_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*(train_percent + val_percent)): int(m_label.shape[0]*1.0)])
+	label['m'] = [m_label, idx_train_m, idx_val_m, idx_test_m]
 
-	# ft_dict = {}
+	ft_dict = {}
 
 
-	# m_ft = m_ft[idx_m]
-	# m_ft_std = (m_ft - m_ft.mean(0)) / m_ft.std(0)
-	# ft_dict['m'] = torch.FloatTensor(m_ft_std)
+	m_ft = m_ft[idx_m]
+	m_ft_std = (m_ft - m_ft.mean(0)) / m_ft.std(0)
+	ft_dict['m'] = torch.FloatTensor(m_ft_std)
 	
-	# # ft_dict['m'] = torch.FloatTensor(A_m_a.shape[0], 128)
-	# # torch.nn.init.xavier_uniform_(ft_dict['m'].data, gain=1.414)
+	# ft_dict['m'] = torch.FloatTensor(A_m_a.shape[0], 128)
+	# torch.nn.init.xavier_uniform_(ft_dict['m'].data, gain=1.414)
 	
-	# ft_dict['a'] = torch.FloatTensor(A_m_a.shape[1], 128)
-	# torch.nn.init.xavier_uniform_(ft_dict['a'].data, gain=1.414)
-	# ft_dict['u'] = torch.FloatTensor(A_m_u.shape[1], 128)
-	# torch.nn.init.xavier_uniform_(ft_dict['u'].data, gain=1.414)
-	# ft_dict['d'] = torch.FloatTensor(A_m_d.shape[1], 128)
-	# torch.nn.init.xavier_uniform_(ft_dict['d'].data, gain=1.414)
+	ft_dict['a'] = torch.FloatTensor(A_m_a.shape[1], 128)
+	torch.nn.init.xavier_uniform_(ft_dict['a'].data, gain=1.414)
+	ft_dict['u'] = torch.FloatTensor(A_m_u.shape[1], 128)
+	torch.nn.init.xavier_uniform_(ft_dict['u'].data, gain=1.414)
+	ft_dict['d'] = torch.FloatTensor(A_m_d.shape[1], 128)
+	torch.nn.init.xavier_uniform_(ft_dict['d'].data, gain=1.414)
 
 
-	# adj_dict = {'m':{}, 'a':{}, 'u':{}, 'd':{}}
-	# adj_dict['m']['a'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_a)))
-	# adj_dict['m']['u'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_u)))
-	# adj_dict['m']['d'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_d)))
+	adj_dict = {'m':{}, 'a':{}, 'u':{}, 'd':{}}
+	adj_dict['m']['a'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_a)))
+	adj_dict['m']['u'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_u)))
+	adj_dict['m']['d'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_d)))
 	
-	# adj_dict['a']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_a.transpose())))
-	# adj_dict['u']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_u.transpose())))
-	# adj_dict['d']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_d.transpose())))
+	adj_dict['a']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_a.transpose())))
+	adj_dict['u']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_u.transpose())))
+	adj_dict['d']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_d.transpose())))
 
-	# return label, ft_dict, adj_dict
+	return label, ft_dict, adj_dict
 
 
 
 	# hgcn write
-	# hgcn_path = './data/imdb3228/imdb3228_hgcn_'+str(train_percent)+'.pkl'
-	# print('hgcn dump: ', hgcn_path)
-	# with open(hgcn_path, 'wb') as out_file:
-	# 	adj_dict['m']['a'] = adj_dict['m']['a'].to_dense()
-	# 	adj_dict['m']['u'] = adj_dict['m']['u'].to_dense()
-	# 	adj_dict['m']['d'] = adj_dict['m']['d'].to_dense()
+	hgcn_path = './data/imdb3228/imdb3228_hgcn_'+str(train_percent)+'.pkl'
+	print('hgcn dump: ', hgcn_path)
+	with open(hgcn_path, 'wb') as out_file:
+		adj_dict['m']['a'] = adj_dict['m']['a'].to_dense()
+		adj_dict['m']['u'] = adj_dict['m']['u'].to_dense()
+		adj_dict['m']['d'] = adj_dict['m']['d'].to_dense()
 		
-	# 	adj_dict['a']['m'] = adj_dict['a']['m'].to_dense()
-	# 	adj_dict['u']['m'] = adj_dict['u']['m'].to_dense()
-	# 	adj_dict['d']['m'] = adj_dict['d']['m'].to_dense()
+		adj_dict['a']['m'] = adj_dict['a']['m'].to_dense()
+		adj_dict['u']['m'] = adj_dict['u']['m'].to_dense()
+		adj_dict['d']['m'] = adj_dict['d']['m'].to_dense()
 
-	# 	pickle.dump((label, ft_dict, adj_dict), out_file)
+		pickle.dump((label, ft_dict, adj_dict), out_file)
 
 
 	# hgcn load
