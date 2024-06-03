@@ -100,19 +100,21 @@ col = [g_id_raw2int[g_id] for g_id in m_g[:,1]]
 data = np.ones(m_g.shape[0], dtype=np.float32)
 sp_A_m_g = sp.coo_matrix((data, (row, col)), shape=(m_num, g_num))
 
-
-with open('./dump/imdb10197_ids_map_dict.pkl', 'wb') as out_file:
+file_path = os.path.join(current_dir, 'dump', 'imdb10197_ids_map_dict.pkl')
+with open(file_path, 'wb') as out_file:
 	pickle.dump((m_id_raw2int, a_id_raw2int, c_id_raw2int, d_id_raw2int, t_id_raw2int, u_id_raw2int, g_id_raw2int), out_file)
 
-with open('./dump/imdb10197_movie_feature.pkl', 'wb') as out_file:
+file_path = os.path.join(current_dir, 'dump', 'imdb10197_movie_feature.pkl')
+with open(file_path, 'wb') as out_file:
 	pickle.dump(m_ft, out_file)
 
-with open('./dump/imdb10197_sp_adj_mats.pkl', 'wb') as out_file:
+file_path = os.path.join(current_dir, 'dump', 'imdb10197_sp_adj_mats.pkl')
+with open(file_path, 'wb') as out_file:
 	pickle.dump((sp_A_m_a, sp_A_m_c, sp_A_m_d, sp_A_m_t, sp_A_m_u, sp_A_m_g), out_file)
 
 
-
-with open('./dump/imdb10197_ids_map_dict.pkl', 'rb') as in_file:
+file_path = os.path.join(current_dir, 'dump', 'imdb10197_ids_map_dict.pkl')
+with open(file_path, 'rb') as in_file:
 	(m_id_raw2int, a_id_raw2int, c_id_raw2int, d_id_raw2int, t_id_raw2int, u_id_raw2int, g_id_raw2int) = pickle.load(in_file)
 print('number of movie: ', len(m_id_raw2int))
 print('number of actor: ', len(a_id_raw2int))
@@ -122,11 +124,14 @@ print('number of tag: ', len(t_id_raw2int))
 print('number of user: ', len(u_id_raw2int))
 print('number of genre: ', len(g_id_raw2int))
 
-with open('./dump/imdb10197_movie_feature.pkl', 'rb') as in_file:
+file_path = os.path.join(current_dir, 'dump', 'imdb10197_movie_feature.pkl')
+with open(file_path, 'rb') as in_file:
 	m_ft = pickle.load(in_file)
 print('movie feature shape: ', m_ft.shape, type(m_ft), m_ft.dtype)
 
-with open('./dump/imdb10197_sp_adj_mats.pkl', 'rb') as in_file:
+
+file_path = os.path.join(current_dir, 'dump', 'imdb10197_sp_adj_mats.pkl')
+with open(file_path, 'rb') as in_file:
 	(sp_A_m_a, sp_A_m_c, sp_A_m_d, sp_A_m_t, sp_A_m_u, sp_A_m_g) = pickle.load(in_file)
 
 print('m_a: ', sp_A_m_a.max(), sp_A_m_a.shape, type(sp_A_m_a))
