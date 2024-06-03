@@ -218,67 +218,67 @@ def load_imdb3228(train_percent):
 
 
 def load_acm4025(train_percent):
-	# np.random.seed(0)
+	np.random.seed(0)
 
-	# path='./data/acm4025/'
-	# dataset='acm4025'
-	# print(path+dataset, train_percent)
+	path='./data/acm4025/'
+	dataset='acm4025'
+	print(path+dataset, train_percent)
 
-	# data = sio.loadmat('{}{}.mat'.format(path, dataset))
+	data = sio.loadmat('{}{}.mat'.format(path, dataset))
 
-	# label = {}
-	# p_label = torch.LongTensor(data['p_label'].argmax(1))
-	# rand_idx = np.random.permutation(p_label.shape[0])
-	# val_percent =  (1.0 - train_percent)/2
-	# idx_train_p = torch.LongTensor(rand_idx[int(p_label.shape[0]*0.0): int(p_label.shape[0]*train_percent)])
-	# idx_val_p = torch.LongTensor(rand_idx[int(p_label.shape[0]*train_percent): int(p_label.shape[0]*(train_percent + val_percent))])
-	# idx_test_p = torch.LongTensor(rand_idx[int(p_label.shape[0]*(train_percent + val_percent)): int(p_label.shape[0]*1.0)])
-	# label['p'] = [p_label, idx_train_p, idx_val_p, idx_test_p]
+	label = {}
+	p_label = torch.LongTensor(data['p_label'].argmax(1))
+	rand_idx = np.random.permutation(p_label.shape[0])
+	val_percent =  (1.0 - train_percent)/2
+	idx_train_p = torch.LongTensor(rand_idx[int(p_label.shape[0]*0.0): int(p_label.shape[0]*train_percent)])
+	idx_val_p = torch.LongTensor(rand_idx[int(p_label.shape[0]*train_percent): int(p_label.shape[0]*(train_percent + val_percent))])
+	idx_test_p = torch.LongTensor(rand_idx[int(p_label.shape[0]*(train_percent + val_percent)): int(p_label.shape[0]*1.0)])
+	label['p'] = [p_label, idx_train_p, idx_val_p, idx_test_p]
 
 
-	# adj_dict = {'p':{}, 'a':{}, 'l':{}}
+	adj_dict = {'p':{}, 'a':{}, 'l':{}}
 
-	# adj_dict['p']['a'] = sp_coo_2_sp_tensor(data['sp_A_p_a'].astype(np.float32).tocoo())
-	# adj_dict['p']['l'] = sp_coo_2_sp_tensor(data['sp_A_p_l'].astype(np.float32).tocoo())
+	adj_dict['p']['a'] = sp_coo_2_sp_tensor(data['sp_A_p_a'].astype(np.float32).tocoo())
+	adj_dict['p']['l'] = sp_coo_2_sp_tensor(data['sp_A_p_l'].astype(np.float32).tocoo())
 	
-	# adj_dict['a']['p'] = sp_coo_2_sp_tensor(data['sp_A_a_p'].astype(np.float32).tocoo())
-	# adj_dict['l']['p'] = sp_coo_2_sp_tensor(data['sp_A_l_p'].astype(np.float32).tocoo())
+	adj_dict['a']['p'] = sp_coo_2_sp_tensor(data['sp_A_a_p'].astype(np.float32).tocoo())
+	adj_dict['l']['p'] = sp_coo_2_sp_tensor(data['sp_A_l_p'].astype(np.float32).tocoo())
 
 
-	# ft_dict = {}
+	ft_dict = {}
 
 	
-	# corpus = data['p_ft'].squeeze()
-	# corpus_str = [corp[0] for corp in corpus]
-	# vectorizer = HashingVectorizer(n_features=128)
-	# p_text_ft = vectorizer.fit_transform(corpus_str)
-	# transformer = TfidfTransformer()
-	# p_text_ft = transformer.fit_transform(p_text_ft) 
-	# p_ft = p_text_ft.todense()
+	corpus = data['p_ft'].squeeze()
+	corpus_str = [corp[0] for corp in corpus]
+	vectorizer = HashingVectorizer(n_features=128)
+	p_text_ft = vectorizer.fit_transform(corpus_str)
+	transformer = TfidfTransformer()
+	p_text_ft = transformer.fit_transform(p_text_ft) 
+	p_ft = p_text_ft.todense()
 
-	# p_ft_std = (p_ft - p_ft.mean(0)) / p_ft.std(0)
-	# ft_dict['p'] = torch.FloatTensor(p_ft_std)
+	p_ft_std = (p_ft - p_ft.mean(0)) / p_ft.std(0)
+	ft_dict['p'] = torch.FloatTensor(p_ft_std)
 
-	# ft_dict['a'] = torch.FloatTensor(adj_dict['p']['a'].shape[1], 128)
-	# torch.nn.init.xavier_uniform_(ft_dict['a'].data, gain=1.414)
-	# ft_dict['l'] = torch.FloatTensor(adj_dict['p']['l'].shape[1], 128)
-	# torch.nn.init.xavier_uniform_(ft_dict['l'].data, gain=1.414)
+	ft_dict['a'] = torch.FloatTensor(adj_dict['p']['a'].shape[1], 128)
+	torch.nn.init.xavier_uniform_(ft_dict['a'].data, gain=1.414)
+	ft_dict['l'] = torch.FloatTensor(adj_dict['p']['l'].shape[1], 128)
+	torch.nn.init.xavier_uniform_(ft_dict['l'].data, gain=1.414)
 
 	# return label, ft_dict, adj_dict
 
 
 
 	# hgcn write
-	# hgcn_path = './data/acm4025/acm4025_hgcn_'+str(train_percent)+'.pkl'
-	# print('hgcn dump: ', hgcn_path)
-	# with open(hgcn_path, 'wb') as out_file:
-	# 	adj_dict['p']['a'] = adj_dict['p']['a'].to_dense()
-	# 	adj_dict['p']['l'] = adj_dict['p']['l'].to_dense()
-		
-	# 	adj_dict['a']['p'] = adj_dict['a']['p'].to_dense()
-	# 	adj_dict['l']['p'] = adj_dict['l']['p'].to_dense()
+	hgcn_path = './data/acm4025/acm4025_hgcn_'+str(train_percent)+'.pkl'
+	print('hgcn dump: ', hgcn_path)
+	with open(hgcn_path, 'wb') as out_file:
+		adj_dict['p']['a'] = adj_dict['p']['a'].to_dense()
+		adj_dict['p']['l'] = adj_dict['p']['l'].to_dense()
+	
+		adj_dict['a']['p'] = adj_dict['a']['p'].to_dense()
+		adj_dict['l']['p'] = adj_dict['l']['p'].to_dense()
 
-	# 	pickle.dump((label, ft_dict, adj_dict), out_file)
+		pickle.dump((label, ft_dict, adj_dict), out_file)
 
 
 
@@ -294,28 +294,28 @@ def load_acm4025(train_percent):
 		adj_dict['a']['p'] = adj_dict['a']['p'].to_sparse()
 		adj_dict['l']['p'] = adj_dict['l']['p'].to_sparse()
 	
-	return label, ft_dict, adj_dict
+	# return label, ft_dict, adj_dict
 
 
 
 	# # metapath write
-	# metapath_path = './data/acm4025/acm4025_metapath_'+str(train_percent)+'.pkl'
-	# print('metapath dump: ', metapath_path)
-	# with open(metapath_path, 'wb') as out_file:
-	# 	label = [data['p_label'], idx_train_p.numpy(), idx_val_p.numpy(), idx_test_p.numpy()]
-	# 	feature = ft_dict['p'].numpy()
-	# 	adj_list = []
-	# 	adj_list.append((data['sp_A_p_a'] * data['sp_A_a_p']).todense())  # PAP
-	# 	adj_list.append((data['sp_A_p_l'] * data['sp_A_l_p']).todense())  # PSP
+	metapath_path = './data/acm4025/acm4025_metapath_'+str(train_percent)+'.pkl'
+	print('metapath dump: ', metapath_path)
+	with open(metapath_path, 'wb') as out_file:
+		label = [data['p_label'], idx_train_p.numpy(), idx_val_p.numpy(), idx_test_p.numpy()]
+		feature = ft_dict['p'].numpy()
+		adj_list = []
+		adj_list.append((data['sp_A_p_a'] * data['sp_A_a_p']).todense())  # PAP
+		adj_list.append((data['sp_A_p_l'] * data['sp_A_l_p']).todense())  # PSP
 		
-	# 	pickle.dump((label, feature, adj_list), out_file)
+		pickle.dump((label, feature, adj_list), out_file)
 
 
 	# metapath load
-	# metapath_path = './data/acm4025/acm4025_metapath_'+str(train_percent)+'.pkl'
-	# print('metapath load: ', metapath_path)
-	# with open(metapath_path, 'rb') as in_file:
-	# 	(label, feature, adj_list) = pickle.load(in_file)
+	metapath_path = './data/acm4025/acm4025_metapath_'+str(train_percent)+'.pkl'
+	print('metapath load: ', metapath_path)
+	with open(metapath_path, 'rb') as in_file:
+		(label, feature, adj_list) = pickle.load(in_file)
 
 
 
@@ -923,7 +923,7 @@ if __name__ == '__main__':
 	load_imdb3228(0.4)	
 	load_imdb3228(0.6)	
 	load_imdb3228(0.8)	
-	# load_acm4025(0.2)
+	load_acm4025(0.2)
 	# load_acm4025(0.4)
 	# load_acm4025(0.6)
 	# load_acm4025(0.8)
