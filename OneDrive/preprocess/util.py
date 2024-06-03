@@ -158,7 +158,7 @@ def load_imdb3228(train_percent):
 	adj_dict['u']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_u.transpose())))
 	adj_dict['d']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_d.transpose())))
 
-	return label, ft_dict, adj_dict
+	#return label, ft_dict, adj_dict
 
 
 
@@ -190,30 +190,30 @@ def load_imdb3228(train_percent):
 		adj_dict['u']['m'] = adj_dict['u']['m'].to_sparse()
 		adj_dict['d']['m'] = adj_dict['d']['m'].to_sparse()
 
-	return label, ft_dict, adj_dict
+	#return label, ft_dict, adj_dict
 
 
 	
 
 	# metapath write
-	# metapath_path = './data/imdb3228/imdb3228_metapath_'+str(train_percent)+'.pkl'
-	# print('metapath dump: ', metapath_path)
-	# with open(metapath_path, 'wb') as out_file:
-	# 	label = [A_m_g, idx_train_m.numpy(), idx_val_m.numpy(), idx_test_m.numpy()]
-	# 	feature = ft_dict['m'].numpy()
-	# 	adj_list = []
-	# 	adj_list.append((A_m_a * A_m_a.transpose()).todense())  # MAM
-	# 	adj_list.append((A_m_u * A_m_u.transpose()).todense())	# MUM
-	# 	adj_list.append((A_m_d * A_m_d.transpose()).todense())	# MDM
+	metapath_path = './data/imdb3228/imdb3228_metapath_'+str(train_percent)+'.pkl'
+	print('metapath dump: ', metapath_path)
+	with open(metapath_path, 'wb') as out_file:
+		label = [A_m_g, idx_train_m.numpy(), idx_val_m.numpy(), idx_test_m.numpy()]
+		feature = ft_dict['m'].numpy()
+		adj_list = []
+		adj_list.append((A_m_a * A_m_a.transpose()).todense())  # MAM
+		adj_list.append((A_m_u * A_m_u.transpose()).todense())	# MUM
+		adj_list.append((A_m_d * A_m_d.transpose()).todense())	# MDM
 		
-	# 	pickle.dump((label, feature, adj_list), out_file)
+		pickle.dump((label, feature, adj_list), out_file)
 
 
 	# metapath load
-	# metapath_path = './data/imdb3228/imdb3228_metapath_'+str(train_percent)+'.pkl'
-	# print('metapath load: ', metapath_path)
-	# with open(metapath_path, 'rb') as in_file:
-	# 	(label, feature, adj_list) = pickle.load(in_file)
+	metapath_path = './data/imdb3228/imdb3228_metapath_'+str(train_percent)+'.pkl'
+	print('metapath load: ', metapath_path)
+	with open(metapath_path, 'rb') as in_file:
+		(label, feature, adj_list) = pickle.load(in_file)
 
 
 
@@ -920,9 +920,9 @@ def load_douban1594():
 
 if __name__ == '__main__':
 	load_imdb3228(0.2)	
-	# load_imdb3228(0.4)	
-	# load_imdb3228(0.6)	
-	# load_imdb3228(0.8)	
+	load_imdb3228(0.4)	
+	load_imdb3228(0.6)	
+	load_imdb3228(0.8)	
 	# load_acm4025(0.2)
 	# load_acm4025(0.4)
 	# load_acm4025(0.6)
