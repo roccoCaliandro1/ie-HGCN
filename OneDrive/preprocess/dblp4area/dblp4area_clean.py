@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import HashingVectorizer, TfidfTransformer
 
 
 # paper feature
-p_raw_id_feature = np.loadtxt('./cleaned/paper.txt', delimiter='\t', dtype=np.str)
+p_raw_id_feature = np.loadtxt('./cleaned/paper.txt', delimiter='\t', dtype=str)
 
 corpus = p_raw_id_feature[:,1]
 vectorizer = HashingVectorizer(n_features=2**7)
@@ -26,7 +26,7 @@ else:
 	exit()
 
 # paper label
-p_raw_label = np.loadtxt('./cleaned/paper_label.txt', delimiter='\t', dtype=np.str)
+p_raw_label = np.loadtxt('./cleaned/paper_label.txt', delimiter='\t', dtype=str)
 p_raw_id_label = p_raw_label[:,:2].astype(np.int32)
 p_label = np.full((len(p_id_raw2int), ), -1, dtype=np.int32)
 for item in p_raw_id_label:
@@ -35,7 +35,7 @@ print('paper label num: ', np.where(p_label != -1)[0].shape[0], '\n')
 
 
 # author id name
-a_raw_id_name = np.loadtxt('./cleaned/author.txt', delimiter='\t', dtype=np.str)
+a_raw_id_name = np.loadtxt('./cleaned/author.txt', delimiter='\t', dtype=str)
 a_raw_ids = a_raw_id_name[:,0].astype(np.int32)
 a_num = len(np.unique(a_raw_ids))
 if len(a_raw_ids) == a_num:
@@ -46,7 +46,7 @@ else:
 	exit()
 
 # author label
-a_raw_label = np.loadtxt('./cleaned/author_label.txt', delimiter='\t', dtype=np.str)
+a_raw_label = np.loadtxt('./cleaned/author_label.txt', delimiter='\t', dtype=str)
 a_raw_id_label = a_raw_label[:,:2].astype(np.int32)
 a_label = np.full((len(a_id_raw2int), ), -1, dtype=np.int32)
 for item in a_raw_id_label:
@@ -56,7 +56,7 @@ print('author label num: ', np.where(a_label != -1)[0].shape[0], '\n')
 
 
 # conf id name
-c_raw_id_name = np.loadtxt('./cleaned/conf.txt', delimiter='\t', dtype=np.str)
+c_raw_id_name = np.loadtxt('./cleaned/conf.txt', delimiter='\t', dtype=str)
 c_raw_ids = c_raw_id_name[:,0].astype(np.int32)
 c_num = len(np.unique(c_raw_ids))
 if len(c_raw_ids) == c_num:
@@ -67,7 +67,7 @@ else:
 	exit()
 
 # conf label
-c_raw_label = np.loadtxt('./cleaned/conf_label.txt', delimiter='\t', dtype=np.str)
+c_raw_label = np.loadtxt('./cleaned/conf_label.txt', delimiter='\t', dtype=str)
 c_raw_id_label = c_raw_label[:,:2].astype(np.int32)
 c_label = np.full((len(c_id_raw2int), ), -1, dtype=np.int32)
 for item in c_raw_id_label:
@@ -77,7 +77,7 @@ print('conf label num: ', np.where(c_label != -1)[0].shape[0], '\n')
 
 
 # term id name
-t_raw_id_name = np.loadtxt('./cleaned/term.txt', delimiter='\t', dtype=np.str)
+t_raw_id_name = np.loadtxt('./cleaned/term.txt', delimiter='\t', dtype=str)
 t_raw_ids = t_raw_id_name[:,0].astype(np.int32)
 t_num = len(np.unique(t_raw_ids))
 if len(t_raw_ids) == t_num:
