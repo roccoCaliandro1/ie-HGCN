@@ -5,8 +5,6 @@ import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 movie_file_path = os.path.join(current_dir, 'cleaned', 'movie.txt')
-
-
 m_raw_id_feature = np.genfromtxt(movie_file_path, delimiter='\t', missing_values='\\N', filling_values=0.0, dtype=np.float32)
 print('movie id feature shape: ', m_raw_id_feature.shape)
 m_raw_ids = m_raw_id_feature[:,0].astype(np.int32)
