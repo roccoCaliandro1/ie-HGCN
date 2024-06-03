@@ -119,28 +119,28 @@ print('sparse mat paper term shape: ', sp_A_p_t.shape, '\n')
 
 
 
-# with open('./dump/dblp4area_ids_map_dict.pkl', 'wb') as out_file:
-# 	pickle.dump((p_id_raw2int, a_id_raw2int, c_id_raw2int, t_id_raw2int), out_file)
+with open('./dump/dblp4area_ids_map_dict.pkl', 'wb') as out_file:
+	pickle.dump((p_id_raw2int, a_id_raw2int, c_id_raw2int, t_id_raw2int), out_file)
 
-# with open('./dump/dblp4area_paper_feature.pkl', 'wb') as out_file:
-# 	pickle.dump(p_ft, out_file)
+with open('./dump/dblp4area_paper_feature.pkl', 'wb') as out_file:
+	pickle.dump(p_ft, out_file)
 
-# with open('./dump/dblp4area_label.pkl', 'wb') as out_file:
-# 	pickle.dump((p_label, a_label, c_label), out_file)
+with open('./dump/dblp4area_label.pkl', 'wb') as out_file:
+	pickle.dump((p_label, a_label, c_label), out_file)
 
-# with open('./dump/dblp4area_sp_adj_mats.pkl', 'wb') as out_file:
-# 	pickle.dump((sp_A_p_a, sp_A_p_c, sp_A_p_t), out_file)
+with open('./dump/dblp4area_sp_adj_mats.pkl', 'wb') as out_file:
+	pickle.dump((sp_A_p_a, sp_A_p_c, sp_A_p_t), out_file)
 
 
 
-# with open('./dump/dblp4area_ids_map_dict.pkl', 'rb') as in_file:
-# 	(p_id_raw2int, a_id_raw2int, c_id_raw2int, t_id_raw2int) = pickle.load(in_file)
+with open('./dump/dblp4area_ids_map_dict.pkl', 'rb') as in_file:
+	(p_id_raw2int, a_id_raw2int, c_id_raw2int, t_id_raw2int) = pickle.load(in_file)
 
-# with open('./dump/dblp4area_paper_feature.pkl', 'rb') as in_file:
-# 	p_ft = pickle.load(in_file)
+with open('./dump/dblp4area_paper_feature.pkl', 'rb') as in_file:
+	p_ft = pickle.load(in_file)
 
-# with open('./dump/dblp4area_label.pkl', 'rb') as in_file:
-# 	(p_label, a_label, c_label) = pickle.load(in_file)
+with open('./dump/dblp4area_label.pkl', 'rb') as in_file:
+	(p_label, a_label, c_label) = pickle.load(in_file)
 
-# with open('./dump/dblp4area_sp_adj_mats.pkl', 'rb') as in_file:
-# 	(sp_A_p_a, sp_A_p_c, sp_A_p_t) = pickle.load(in_file)
+with open('./dump/dblp4area_sp_adj_mats.pkl', 'rb') as in_file:
+	(sp_A_p_a, sp_A_p_c, sp_A_p_t) = pickle.load(in_file)
