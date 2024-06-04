@@ -41,50 +41,6 @@ def load_imdb3228(train_percent):
 
 
 
-def load_acm4025(train_percent):
-	hgcn_path = './data/acm4025/acm4025_hgcn_'+str(train_percent)+'.pkl'
-	print('hgcn load: ', hgcn_path, '\n')
-	with open(hgcn_path, 'rb') as in_file:
-		(label, ft_dict, adj_dict) = pickle.load(in_file)
-
-		adj_dict['p']['a'] = adj_dict['p']['a'].to_sparse()
-		adj_dict['p']['l'] = adj_dict['p']['l'].to_sparse()
-		
-		adj_dict['a']['p'] = adj_dict['a']['p'].to_sparse()
-		adj_dict['l']['p'] = adj_dict['l']['p'].to_sparse()
-	
-	return label, ft_dict, adj_dict
-
-
-
-def load_dblp4area4057(train_percent):
-	hgcn_path = './data/dblp4area4057/dblp4area4057_hgcn_'+str(train_percent)+'.pkl'
-	print('hgcn load: ', hgcn_path, '\n')
-	with open(hgcn_path, 'rb') as in_file:
-		(label, ft_dict, adj_dict) = pickle.load(in_file)
-	
-		adj_dict['p']['a'] = adj_dict['p']['a'].to_sparse()
-		adj_dict['p']['c'] = adj_dict['p']['c'].to_sparse()
-		adj_dict['p']['t'] = adj_dict['p']['t'].to_sparse()
-		
-		adj_dict['a']['p'] = adj_dict['a']['p'].to_sparse()
-		adj_dict['c']['p'] = adj_dict['c']['p'].to_sparse()
-		adj_dict['t']['p'] = adj_dict['t']['p'].to_sparse()
-
-	return label, ft_dict, adj_dict
-
-
 
 if __name__ == '__main__':
-	load_imdb3228(0.2)	
-	# load_imdb3228(0.4)	
-	# load_imdb3228(0.6)	
-	# load_imdb3228(0.8)	
-	# load_acm4025(0.2)
-	# load_acm4025(0.4)
-	# load_acm4025(0.6)
-	# load_acm4025(0.8)
-	# load_dblp4area4057(0.2)
-	# load_dblp4area4057(0.4)
-	# load_dblp4area4057(0.6)
-	# load_dblp4area4057(0.8)
+	load_imdb3228(0.2)

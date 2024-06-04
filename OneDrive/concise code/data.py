@@ -22,57 +22,6 @@ def train_val_test_split(label_shape, train_percent):
     return idx_train, idx_val, idx_test
 
 
-def load_odbmag_4017(train_percent):
-    hgcn_path = './datasets/odbmag_4017'
-    print('load data from: ', hgcn_path, '\n')
-    
-    feats = np.load(hgcn_path+'/feats.npz', allow_pickle=True)
-    p_ft = feats['p_ft'] 
-    a_ft = feats['a_ft'] 
-    i_ft = feats['i_ft'] 
-    f_ft = feats['f_ft']
-
-    ft_dict = {}
-    ft_dict['p'] = torch.FloatTensor(p_ft)
-    ft_dict['a'] = torch.FloatTensor(a_ft)
-    ft_dict['i'] = torch.FloatTensor(i_ft)
-    ft_dict['f'] = torch.FloatTensor(f_ft)
-
-
-    p_label = np.load(hgcn_path+'/p_label.npy', allow_pickle=True)
-    p_label = torch.LongTensor(p_label)
-
-    idx_train_p, idx_val_p, idx_test_p = train_val_test_split(p_label.shape[0], train_percent)
-
-
-    label = {}
-    label['p'] = [p_label, idx_train_p, idx_val_p, idx_test_p]
-    
-
-    sp_a_i = sp.load_npz(hgcn_path+'/norm_sp_a_i.npz')
-    sp_i_a = sp.load_npz(hgcn_path+'/norm_sp_i_a.npz')
-    sp_a_p = sp.load_npz(hgcn_path+'/norm_sp_a_p.npz')
-    sp_p_a = sp.load_npz(hgcn_path+'/norm_sp_p_a.npz')
-    sp_p_f = sp.load_npz(hgcn_path+'/norm_sp_p_f.npz')
-    sp_f_p = sp.load_npz(hgcn_path+'/norm_sp_f_p.npz')
-    sp_p_cp = sp.load_npz(hgcn_path+'/norm_sp_p_cp.npz')
-    sp_cp_p = sp.load_npz(hgcn_path+'/norm_sp_cp_p.npz')
-
-    adj_dict = {'p':{}, 'a':{}, 'i':{}, 'f':{}}
-    adj_dict['a']['i'] = sp_coo_2_sp_tensor(sp_a_i.tocoo())
-    adj_dict['a']['p'] = sp_coo_2_sp_tensor(sp_a_p.tocoo())
-    adj_dict['i']['a'] = sp_coo_2_sp_tensor(sp_i_a.tocoo())
-    adj_dict['f']['p'] = sp_coo_2_sp_tensor(sp_f_p.tocoo())
-    adj_dict['p']['a'] = sp_coo_2_sp_tensor(sp_p_a.tocoo())
-    adj_dict['p']['f'] = sp_coo_2_sp_tensor(sp_p_f.tocoo())
-    adj_dict['p']['citing_p'] = sp_coo_2_sp_tensor(sp_p_cp.tocoo())
-    adj_dict['p']['cited_p'] = sp_coo_2_sp_tensor(sp_cp_p.tocoo())
-
-
-    return label, ft_dict, adj_dict
-
-
-
 def load_imdb_3228(train_percent):
 
     hgcn_path = './datasets/imdb_3228/imdb3228_hgcn_'+str(0.2)+'.pkl'
@@ -97,61 +46,7 @@ def load_imdb_3228(train_percent):
 
 
 
-def load_acm_4025(train_percent):
-   
-    hgcn_path = './datasets/acm_4025/acm4025_hgcn_'+str(0.2)+'.pkl'
-    print('load data from: ', hgcn_path, '\n')
-    with open(hgcn_path, 'rb') as in_file:
-        (label, ft_dict, adj_dict) = pickle.load(in_file)
-
-        p_label = label['p'][0]
-        idx_train_p, idx_val_p, idx_test_p = train_val_test_split(p_label.shape[0], train_percent)
-        label['p'] = [p_label, idx_train_p, idx_val_p, idx_test_p]
-
-
-        adj_dict['p']['a'] = adj_dict['p']['a'].to_sparse()
-        adj_dict['p']['l'] = adj_dict['p']['l'].to_sparse()
-        
-        adj_dict['a']['p'] = adj_dict['a']['p'].to_sparse()
-        adj_dict['l']['p'] = adj_dict['l']['p'].to_sparse()
-    
-    return label, ft_dict, adj_dict
-
-
-
-def load_dblp_4057(train_percent):
-   
-    hgcn_path = './datasets/dblp_4057/dblp4area4057_hgcn_'+str(0.2)+'.pkl'
-    print('load data from: ', hgcn_path, '\n')
-    with open(hgcn_path, 'rb') as in_file:
-        (label, ft_dict, adj_dict) = pickle.load(in_file)
-
-        a_label = label['a'][0]
-        idx_train_a, idx_val_a, idx_test_a = train_val_test_split(a_label.shape[0], train_percent)
-        label = {}
-        label['a'] = [a_label, idx_train_a, idx_val_a, idx_test_a]
-
-        adj_dict['p']['a'] = adj_dict['p']['a'].to_sparse()
-        adj_dict['p']['c'] = adj_dict['p']['c'].to_sparse()
-        adj_dict['p']['t'] = adj_dict['p']['t'].to_sparse()
-        
-        adj_dict['a']['p'] = adj_dict['a']['p'].to_sparse()
-        adj_dict['c']['p'] = adj_dict['c']['p'].to_sparse()
-        adj_dict['t']['p'] = adj_dict['t']['p'].to_sparse()
-
-    return label, ft_dict, adj_dict
-
-
-
 if __name__ == '__main__':
-
-    load_odbmag_4017(0.01)
-    # load_odbmag_4017(0.05)
-    # load_odbmag_4017(0.1)
-    # load_odbmag_4017(0.2)
-    # load_odbmag_4017(0.4)
-    # load_odbmag_4017(0.6)
-    # load_odbmag_4017(0.8)
 
     load_imdb_3228(0.01)
     # load_imdb_3228(0.05)
@@ -160,21 +55,5 @@ if __name__ == '__main__':
     # load_imdb_3228(0.4)
     # load_imdb_3228(0.6)
     # load_imdb_3228(0.8)
-
-    load_acm_4025(0.01)
-    # load_acm_4025(0.05)
-    # load_acm_4025(0.1)
-    # load_acm_4025(0.2)
-    # load_acm_4025(0.4)
-    # load_acm_4025(0.6)
-    # load_acm_4025(0.8)
-
-    load_dblp_4057(0.01)
-    # load_dblp_4057(0.05)
-    # load_dblp_4057(0.1)
-    # load_dblp_4057(0.2)
-    # load_dblp_4057(0.4)
-    # load_dblp_4057(0.6)
-    # load_dblp_4057(0.8)
 
     print('Successfully Loaded')
