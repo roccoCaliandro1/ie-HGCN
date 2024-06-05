@@ -158,7 +158,7 @@ def load_imdb3228(train_percent):
 	adj_dict['u']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_u.transpose())))
 	adj_dict['d']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_d.transpose())))
 
-	#return label, ft_dict, adj_dict
+	# return label, ft_dict, adj_dict
 
 
 
@@ -190,7 +190,7 @@ def load_imdb3228(train_percent):
 		adj_dict['u']['m'] = adj_dict['u']['m'].to_sparse()
 		adj_dict['d']['m'] = adj_dict['d']['m'].to_sparse()
 
-	#return label, ft_dict, adj_dict
+	return label, ft_dict, adj_dict
 
 
 	
