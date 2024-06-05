@@ -177,20 +177,20 @@ if __name__ == '__main__':
         print('type fusion: ', type_fusion)
         print('type att size: ', type_att_size)
 
-        # hid_layer_dim = [64,32,16,8]  # imdb3228
-        # epochs = 250
-        # label, ft_dict, adj_dict = load_imdb3228(train_percent)
-        # output_layer_shape = dict.fromkeys(ft_dict.keys(), 4)
+        hid_layer_dim = [64,32,16,8]  # imdb3228
+        epochs = 250
+        label, ft_dict, adj_dict = load_imdb3228(train_percent)
+        output_layer_shape = dict.fromkeys(ft_dict.keys(), 4)
 
         # hid_layer_dim = [64,32,16,8] # acm
         # epochs = 130
         # label, ft_dict, adj_dict = load_acm4025(train_percent)
         # output_layer_shape = dict.fromkeys(ft_dict.keys(), 3)
 
-        hid_layer_dim = [64,32,16,8]  # dblp4area4057
-        epochs = 200
-        label, ft_dict, adj_dict = load_imdb3228(train_percent)
-        output_layer_shape = dict.fromkeys(ft_dict.keys(), 4)
+        # hid_layer_dim = [64,32,16,8]  # dblp4area4057
+        # epochs = 200
+        # label, ft_dict, adj_dict = load_imdb3228(train_percent)
+        # output_layer_shape = dict.fromkeys(ft_dict.keys(), 4)
 
         layer_shape = []
         input_layer_shape = dict([(k, ft_dict[k].shape[1]) for k in ft_dict.keys()])
