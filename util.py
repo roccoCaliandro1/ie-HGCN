@@ -3,6 +3,7 @@ import scipy.sparse as sp
 import scipy.io as sio
 import pickle
 import torch
+import os
 from sklearn.feature_extraction.text import HashingVectorizer, TfidfTransformer
 
 
@@ -25,7 +26,9 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
 
 
 def load_imdb3228(train_percent):
-	hgcn_path = './data/imdb3228/imdb3228_hgcn_'+str(train_percent)+'.pkl'
+	current_dir = os.path.dirname(os.path.abspath(__file__))
+	hgcn_path = os.path.join(current_dir, 'data\\imdb3228\\imdb3228_hgcn_' + 
+						  str(train_percent)+'.pkl')
 	print('hgcn load: ', hgcn_path, '\n')
 	with open(hgcn_path, 'rb') as in_file:
 		(label, ft_dict, adj_dict) = pickle.load(in_file)
