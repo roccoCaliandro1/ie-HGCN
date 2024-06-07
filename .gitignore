@@ -3,3 +3,4 @@ OneDrive/data/*
 OneDrive/preprocess/twitter/cleaned/big/*
 OneDrive/preprocess/twitter/cleaned/small/*
 **py_cache**
+.idea/*

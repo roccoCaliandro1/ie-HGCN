@@ -96,19 +96,27 @@ def load_imdb3228(train_percent):
 
 	path='./data/imdb10197/'
 	dataset='imdb10197'
+
+	#prints datased and train percentage
 	print('imdb3228', train_percent)
 	
+	# load the movie_feature (m_ft) pickle, created during the preprocessing phase
 	with open('{}{}_movie_feature.pkl'.format(path, dataset), 'rb') as in_file:
 		m_ft = pickle.load(in_file)
 
+	# load the adjacency matrices, created during the preprocessing phase
 	with open('{}{}_sp_adj_mats.pkl'.format(path, dataset), 'rb') as in_file:
 		(sp_A_m_a, sp_A_m_c, sp_A_m_d, sp_A_m_t, sp_A_m_u, sp_A_m_g) = pickle.load(in_file)
 
+	# convert the adjacency sparse matrix in a dense array 
 	A_m_g = sp_A_m_g.toarray()
+	# Convert the adjacency sparse matrices in a CSR (Compressed Sparse Row)
 	A_m_a = sp_A_m_a.tocsr()
 	A_m_u = sp_A_m_u.tocsr()
 	A_m_d = sp_A_m_d.tocsr()
 	
+
+	# Create Labels and Split Indices for Training, Validation, and Test Sets:
 	idx_m = np.where(A_m_g.sum(1)==1)[0]
 	idx_g = np.array([4,6,7,10])
 	idx_m = idx_m[np.where(A_m_g[idx_m][:,idx_g].sum(1) == 1)[0]]
@@ -131,8 +139,9 @@ def load_imdb3228(train_percent):
 	idx_test_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*(train_percent + val_percent)): int(m_label.shape[0]*1.0)])
 	label['m'] = [m_label, idx_train_m, idx_val_m, idx_test_m]
 
-	ft_dict = {}
 
+	# Standardize Movie Features and Initialize Feature Tensors
+	ft_dict = {}
 
 	m_ft = m_ft[idx_m]
 	m_ft_std = (m_ft - m_ft.mean(0)) / m_ft.std(0)
@@ -149,6 +158,7 @@ def load_imdb3228(train_percent):
 	torch.nn.init.xavier_uniform_(ft_dict['d'].data, gain=1.414)
 
 
+	# Create Adjacency Dictionary with Row-Normalized Sparse Tensors
 	adj_dict = {'m':{}, 'a':{}, 'u':{}, 'd':{}}
 	adj_dict['m']['a'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_a)))
 	adj_dict['m']['u'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_u)))
@@ -163,6 +173,7 @@ def load_imdb3228(train_percent):
 
 
 	# hgcn write
+	# Save Processed Data for Heterogeneous Graph Convolutional Networks (HGCN):
 	hgcn_path = './data/imdb3228/imdb3228_hgcn_'+str(train_percent)+'.pkl'
 	print('hgcn dump: ', hgcn_path)
 	with open(hgcn_path, 'wb') as out_file:
@@ -178,6 +189,7 @@ def load_imdb3228(train_percent):
 
 
 	# hgcn load
+	# Load Saved HGCN Data and Convert Dense Matrices Back to Sparse:
 	hgcn_path = './data/imdb3228/imdb3228_hgcn_'+str(train_percent)+'.pkl'
 	print('hgcn load: ', hgcn_path, '\n')
 	with open(hgcn_path, 'rb') as in_file:
@@ -190,6 +202,7 @@ def load_imdb3228(train_percent):
 		adj_dict['u']['m'] = adj_dict['u']['m'].to_sparse()
 		adj_dict['d']['m'] = adj_dict['d']['m'].to_sparse()
 
+	# Return processed data
 	return label, ft_dict, adj_dict
 
 
