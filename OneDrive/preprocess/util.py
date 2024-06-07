@@ -92,6 +92,7 @@ def accuracy(output, labels):
 
 
 def load_imdb3228(train_percent):
+	# fix the seed of numpy in order to make the experiment reproducible
 	np.random.seed(0)
 
 	path='./data/imdb10197/'
@@ -117,23 +118,34 @@ def load_imdb3228(train_percent):
 	
 
 	# Create Labels and Split Indices for Training, Validation, and Test Sets:
+	# In the following row, we compute the sum for each movie over all the genres
+	# with the aim to obtain movies with exactly one genre
 	idx_m = np.where(A_m_g.sum(1)==1)[0]
+	# we take only 4 genres
+	# we'll obtain at the end for each movie only one genre
 	idx_g = np.array([4,6,7,10])
+	# we filter by the movies that contain the genre previously defined
 	idx_m = idx_m[np.where(A_m_g[idx_m][:,idx_g].sum(1) == 1)[0]]
 	
+	# we are interested only to actors, directors and users linked with the filtered movies
 	idx_a = np.where(A_m_a[idx_m].sum(0) > 0)[1]
 	idx_u = np.where(A_m_u[idx_m].sum(0) > 0)[1]
 	idx_d = np.where(A_m_d[idx_m].sum(0) > 0)[1]
 
+	# recompute the adjacency matrix on the basis with the previous computed indices
 	A_m_a = A_m_a[idx_m][:,idx_a]
 	A_m_u = A_m_u[idx_m][:,idx_u]
 	A_m_d = A_m_d[idx_m][:,idx_d]
 	A_m_g = A_m_g[idx_m][:,idx_g]
 
 	label = {}
+	# m_label contains only values between 0 and 3 that are the indices of the genres related to the movies
 	m_label = torch.LongTensor(A_m_g.argmax(1))
+	# we craete a permutation of the post-filtering movie ids
 	rand_idx = np.random.permutation(m_label.shape[0])
+	# split the remaining part into validation and test
 	val_percent =  (1.0 - train_percent)/2
+	# splits the randix array into 3 idx arrays: one for train the other one for the validation and the other one for test
 	idx_train_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*0.0): int(m_label.shape[0]*train_percent)])
 	idx_val_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*train_percent): int(m_label.shape[0]*(train_percent + val_percent))])
 	idx_test_m = torch.LongTensor(rand_idx[int(m_label.shape[0]*(train_percent + val_percent)): int(m_label.shape[0]*1.0)])
@@ -143,8 +155,11 @@ def load_imdb3228(train_percent):
 	# Standardize Movie Features and Initialize Feature Tensors
 	ft_dict = {}
 
+	# select all the features of the filtered movie
 	m_ft = m_ft[idx_m]
+	# we compute the z-score as (X-mean) divided by std
 	m_ft_std = (m_ft - m_ft.mean(0)) / m_ft.std(0)
+	# we save the z-score into dictionary
 	ft_dict['m'] = torch.FloatTensor(m_ft_std)
 	
 	# ft_dict['m'] = torch.FloatTensor(A_m_a.shape[0], 128)
@@ -416,6 +431,6 @@ def load_imdb10197():
 
 if __name__ == '__main__':
 	load_imdb3228(0.2)	
-	load_imdb3228(0.4)	
+	'''load_imdb3228(0.4)	
 	load_imdb3228(0.6)	
-	load_imdb3228(0.8)	
+	load_imdb3228(0.8)	'''
