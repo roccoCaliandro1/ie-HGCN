@@ -3,29 +3,38 @@ import pickle
 import scipy.sparse as sp
 import os
 
+# load data from txt
 current_dir = os.path.dirname(os.path.abspath(__file__))
 movie_file_path = os.path.join(current_dir, 'cleaned', 'movie.txt')
 m_raw_id_feature = np.genfromtxt(movie_file_path, delimiter='\t', missing_values='\\N', filling_values=0.0, dtype=np.float32)
 print('movie id feature shape: ', m_raw_id_feature.shape)
 m_raw_ids = m_raw_id_feature[:,0].astype(np.int32)
 m_num = len(np.unique(m_raw_ids))
+# check if distinct ids are equal to total ids number
 if m_num == len(m_raw_ids):
 	print('number of unique movie: ', m_num, '\n')
+	# dictionary movie_id, sequential_id
 	m_id_raw2int = dict(zip(m_raw_ids, list(range(m_num))))
+	# we remove here the first column
 	m_ft = m_raw_id_feature[:,1:]
 else:
 	print('duplicate paper id feature!\n')
 	exit()
 
-
+# load data from txt
 movie_actor_path = os.path.join(current_dir, 'cleaned', 'movie_actor.txt')
 m_a = np.genfromtxt(movie_actor_path, delimiter='\t', dtype=str)
 print('movie_actor shape: ', m_a.shape)
+# create ids with actorIds
 a_raw_ids = m_a[:,1]
+# create unique actorIds: why is contatenated with a number like 1000057-don_adams?
 a_unique_raw_ids = np.unique(a_raw_ids)
+# convert each id with a number from 0 to n-1
 a_id_raw2int = dict(zip(a_unique_raw_ids, list(range(len(a_unique_raw_ids)))))
+# get the number of distinct actors
 a_num = len(a_unique_raw_ids)
 print('number of unique actor: ', a_num, '\n')
+# creation of: row, col and data for the creation of a sparse matrix
 row = [m_id_raw2int[m_id] for m_id in m_a[:,0].astype(np.int32)]
 col = [a_id_raw2int[a_id] for a_id in m_a[:,1]]
 data = m_a[:,2].astype(np.float32)
