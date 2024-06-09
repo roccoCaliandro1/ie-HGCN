@@ -25,22 +25,15 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
 
 
 
-def load_imdb3228(train_percent):
+def load_twitter():
 	current_dir = os.path.dirname(os.path.abspath(__file__))
-	hgcn_path = os.path.join(current_dir, 'data', 'imdb3228', 'imdb3228_hgcn_' + 
-				str(train_percent)+'.pkl')
-	print('hgcn load: ', hgcn_path, '\n')
-	with open(hgcn_path, 'rb') as in_file:
-		(label, ft_dict, adj_dict) = pickle.load(in_file)
-		adj_dict['m']['a'] = adj_dict['m']['a'].to_sparse()
-		adj_dict['m']['u'] = adj_dict['m']['u'].to_sparse()
-		adj_dict['m']['d'] = adj_dict['m']['d'].to_sparse()
-		
-		adj_dict['a']['m'] = adj_dict['a']['m'].to_sparse()
-		adj_dict['u']['m'] = adj_dict['u']['m'].to_sparse()
-		adj_dict['d']['m'] = adj_dict['d']['m'].to_sparse()
+	twitter_path = os.path.join(current_dir, 'twitter_dataset','twitter_hgcn.pkl')
+	print('twitter load: ', twitter_path, '\n')
+	with open(twitter_path, 'rb') as in_file:
+		(label, uu_dict, adj_dict_uu) = pickle.load(in_file)
+		adj_dict_uu['u']['u'] = adj_dict_uu['u']['u'].to_sparse()
 
-	return label, ft_dict, adj_dict
+	return label, uu_dict, adj_dict_uu
 
 
 
