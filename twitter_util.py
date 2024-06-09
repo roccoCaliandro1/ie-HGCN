@@ -3,6 +3,7 @@ import scipy.sparse as sp
 import scipy.io as sio
 import pickle
 import torch
+import os
 from sklearn.feature_extraction.text import HashingVectorizer, TfidfTransformer
 from sklearn.manifold import TSNE
 from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
@@ -10,15 +11,41 @@ from sklearn.cluster import KMeans
 
 def load_twitter():
     path='./twitter_dataset/'
-    dataset='twitter'
 	
-    # load the movie_feature (m_ft) pickle, created during the preprocessing phase
-    with open('{}{}_movie_feature.pkl'.format(path, dataset), 'rb') as in_file:
-        m_ft = pickle.load(in_file)
+    # load the train embeddings file, created during the preprocessing phase
+    with open('{}train_embeddings.pkl'.format(path), 'rb') as in_file:
+        u_ft_train = pickle.load(in_file)
+        
 
+    # load the test embeddings file, created during the preprocessing phase
+    with open('{}test_embeddings.pkl'.format(path), 'rb') as in_file:
+        u_ft_test = pickle.load(in_file)
+
+    
+    full_features = np.matrix([np.concatenate((np.asarray(u_ft_train['userId']) , np.asarray(u_ft_test['userId']))), 
+        np.concatenate((np.asarray(u_ft_train['embeddings']) , np.asarray(u_ft_test['embeddings'])))])
+    
+
+    print(u_ft_train)
 	# load the adjacency matrices, created during the preprocessing phase
-    with open('{}{}_sp_adj_mats.pkl'.format(path, dataset), 'rb') as in_file:
-        (sp_A_m_a, sp_A_m_c, sp_A_m_d, sp_A_m_t, sp_A_m_u, sp_A_m_g) = pickle.load(in_file)
+    with open('{}twitter_sp_uu_sn_adj_mats.pkl'.format(path), 'rb') as in_file:
+        (sp_A_uu_sn) = pickle.load(in_file)
+
+    A_uu_sn = sp_A_uu_sn.tocsr()
+
+    label = {}
+    # m_label contains only values between 0 and 3 that are the indices of the genres related to the movies
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    full_label_path = os.path.join(current_dir, 'twitter_dataset', 'full_label.csv')
+    full_label = np.genfromtxt(full_label_path, delimiter=',', dtype=np.int32)
+
+    full_label_sorted = np.sort(full_label, axis=0)
+
+    label = {}
+    u_label = torch.LongTensor(full_label_sorted[:,1])
+    idx_train_u = torch.LongTensor(u_ft_train['userId'])
+    idx_test_u = torch.LongTensor(u_ft_test['userId'])
+    label['u'] = [u_label, idx_train_u, idx_test_u]
 
 
     print("Ciao")
