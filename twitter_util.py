@@ -9,6 +9,21 @@ from sklearn.manifold import TSNE
 from sklearn.metrics import normalized_mutual_info_score, adjusted_rand_score
 from sklearn.cluster import KMeans
 
+def row_normalize(mat):
+    """Row-normalize matrix"""
+    rowsum = mat.sum(1)
+    rowsum[rowsum == 0.] = 0.01
+    return mat / rowsum
+
+def sp_coo_2_sp_tensor(sp_coo_mat):
+    """Convert a scipy sparse matrix to a torch sparse tensor."""
+    indices = torch.from_numpy(np.vstack((sp_coo_mat.row, sp_coo_mat.col)).astype(np.int64))
+    values = torch.from_numpy(sp_coo_mat.data)
+    shape = torch.Size(sp_coo_mat.shape)
+    return torch.sparse.FloatTensor(indices, values, shape)
+
+
+
 def load_twitter():
     path='./twitter_dataset/'
 	
@@ -39,7 +54,6 @@ def load_twitter():
 
     A_uu_sn = sp_A_uu_sn.tocsr()
 
-    label = {}
     # m_label contains only values between 0 and 3 that are the indices of the genres related to the movies
     current_dir = os.path.dirname(os.path.abspath(__file__))
     full_label_path = os.path.join(current_dir, 'twitter_dataset', 'full_label.csv')
@@ -53,9 +67,24 @@ def load_twitter():
     idx_test_u = torch.LongTensor(u_ft_test['userId'])
     label['u'] = [u_label, idx_train_u, idx_test_u]
 
+    ft_dict = {}
+    u_ft_std = (full_features - full_features.mean(0)) / full_features.std(0)
+    # ft_dict['u'] = torch.FloatTensor(full_features) da provare senza z_score
+    ft_dict['u'] = torch.FloatTensor(u_ft_std)
 
-    print("Ciao")
+    adj_dict = {'u':{}}
+    adj_dict['u']['u'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_uu_sn)))
+    # adj_dict['a']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_a.transpose())))
 
+	# hgcn write
+	# Save Processed Data for Heterogeneous Graph Convolutional Networks (HGCN):
+    hgcn_path = './twitter_dataset/twitter_hgcn.pkl'
+    print('hgcn dump: ', hgcn_path)
+    with open(hgcn_path, 'wb') as out_file:
+        adj_dict['u']['u'] = adj_dict['u']['u'].to_dense()
+     
+        pickle.dump((label, ft_dict, adj_dict), out_file)
+    
 
 if __name__ == '__main__':
 	load_twitter()	
