@@ -21,12 +21,18 @@ def load_twitter():
     with open('{}test_embeddings.pkl'.format(path), 'rb') as in_file:
         u_ft_test = pickle.load(in_file)
 
+    #join the train and test embeddings along with thier userIds    
+    full_features = np.column_stack((
+         np.concatenate((np.asarray(u_ft_train['userId']) , np.asarray(u_ft_test['userId']))), 
+         np.concatenate((np.asarray(u_ft_train['embeddings']) , np.asarray(u_ft_test['embeddings']))
+                        )))
     
-    full_features = np.matrix([np.concatenate((np.asarray(u_ft_train['userId']) , np.asarray(u_ft_test['userId']))), 
-        np.concatenate((np.asarray(u_ft_train['embeddings']) , np.asarray(u_ft_test['embeddings'])))])
-    
+    #sort the full features based on userIds
+    full_features = full_features[full_features[:,0].argsort()]
 
-    print(u_ft_train)
+    #remove the userIds from the full features, now we have the ordered embeddings
+    full_features = full_features[:,1:]
+
 	# load the adjacency matrices, created during the preprocessing phase
     with open('{}twitter_sp_uu_sn_adj_mats.pkl'.format(path), 'rb') as in_file:
         (sp_A_uu_sn) = pickle.load(in_file)
