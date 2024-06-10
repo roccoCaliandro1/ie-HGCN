@@ -39,4 +39,4 @@ def load_twitter():
 
 
 if __name__ == '__main__':
-	load_imdb3228(0.2)
+	load_twitter()
