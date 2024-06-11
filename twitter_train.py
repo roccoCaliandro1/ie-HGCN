@@ -59,6 +59,14 @@ def test():
         'test micro f1 u: {:.4f}'.format(f1_micro_test_u.item()),
         'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item()),
     )
+    timestamp = time.time()
+    with open("output_twitter/out_" + str(timestamp) + "_XXX_YYY.txt", "wb") as fOut:
+        # Writing data to a file
+        fOut.write(('test micro f1 u: {:.4f}'.format(f1_micro_test_u.item())).encode('utf-8'))
+        fOut.write(('\n' + 'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item())).encode('utf-8'))
+        fOut.write(('\n\n ********** \n').encode('utf-8'))
+        fOut.write((classification_report(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1))).encode('utf-8'))
+
 
     return (f1_micro_test_u, f1_macro_test_u)
 
