@@ -8,6 +8,7 @@ import warnings
 import sklearn.exceptions
 warnings.filterwarnings("ignore", category=sklearn.exceptions.UndefinedMetricWarning)
 
+from datetime import datetime
 import time
 
 from util_twitter import *
@@ -59,8 +60,10 @@ def test():
         'test micro f1 u: {:.4f}'.format(f1_micro_test_u.item()),
         'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item()),
     )
-    timestamp = time.time()
-    with open("output_twitter/out_" + str(timestamp) + "_XXX_YYY.txt", "wb") as fOut:
+    now = datetime.now()
+    string = now.strftime('%Y-%m-%d %H:%M:%S').replace(" ", "-").replace(":", "-")
+
+    with open("output_twitter/out_" + string + "_XXX_YYY.txt", "wb") as fOut:
         # Writing data to a file
         fOut.write(('test micro f1 u: {:.4f}'.format(f1_micro_test_u.item())).encode('utf-8'))
         fOut.write(('\n' + 'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item())).encode('utf-8'))
@@ -94,7 +97,7 @@ if __name__ == '__main__':
         print('type att size: ', type_att_size)
 
         hid_layer_dim = [64,32,16,8]  # imdb3228
-        epochs = 250
+        epochs = 3
         label, ft_dict, adj_dict = load_twitter()
         output_layer_shape = dict.fromkeys(ft_dict.keys(), 2)
 
