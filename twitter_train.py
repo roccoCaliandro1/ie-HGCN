@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, classification_report
 
 import warnings
 import sklearn.exceptions
@@ -27,6 +27,8 @@ def train(epoch):
     f1_micro_train_u = f1_score(y_train_u.data.cpu(), x_train_u.data.cpu().argmax(1), average='micro')
     f1_macro_train_u = f1_score(y_train_u.data.cpu(), x_train_u.data.cpu().argmax(1), average='macro')
 
+    print(classification_report(y_train_u.data.cpu(), x_train_u.data.cpu().argmax(1)))
+
     loss_train.backward()
     optimizer.step()
 
@@ -49,7 +51,8 @@ def test():
     y_test_u = label['u'][0][idx_test_u]
     f1_micro_test_u = f1_score(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1), average='micro')
     f1_macro_test_u = f1_score(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1), average='macro')
-
+    
+    print(classification_report(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1)))
 
     print(
         '\n'+
