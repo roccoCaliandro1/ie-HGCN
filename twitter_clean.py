@@ -32,7 +32,7 @@ def launch_twitter_clean(network_type):
 	full_label = np.genfromtxt(full_label_path, delimiter=',', dtype=np.int32)
 	sp_A_uu_sn = sp.coo_matrix((data, (row, col)), shape=(full_label.shape[0], full_label.shape[0]))
 
-	#np.savetxt('out.txt', sp_A_uu_sn)
+	np.savetxt('out.txt', sp_A_uu_sn)
 
 	with np.printoptions(threshold=np.inf):
 		sourceFile = open('demo.txt', 'w')
