@@ -23,16 +23,18 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
     return torch.sparse.FloatTensor(indices, values, shape)
 
 def load_twitter(network_type, dim, treshold=-1):
+    current_dir = os.path.dirname(os.path.abspath(__file__))
     path='twitter_dataset/'
 
-    path_embeddings='twitter_dataset/embedded_datasets/'+str(dim)+'_dim/'
+    path_embeddings=os.path.join(current_dir, 'twitter_dataset/embedded_datasets/'+str(dim)+'_dim/')
+    
     # load the train embeddings file, created during the preprocessing phase
     with open(path_embeddings+'train_embeddings_'+str(dim)+'.pkl', 'rb') as in_file:
         u_ft_train = pickle.load(in_file)
         
 
     # load the test embeddings file, created during the preprocessing phase
-    with open(path_embeddings+'/test_embeddings_'+str(dim)+'.pkl', 'rb') as in_file:
+    with open(path_embeddings+'test_embeddings_'+str(dim)+'.pkl', 'rb') as in_file:
         u_ft_test = pickle.load(in_file)
 
     #join the train and test embeddings along with thier userIds    
@@ -76,7 +78,9 @@ def load_twitter(network_type, dim, treshold=-1):
 
 	# hgcn write
 	# Save Processed Data for Heterogeneous Graph Convolutional Networks (HGCN):
-    hgcn_path = './twitter_dataset/twitter_hgcn_' + str(treshold).replace(".","_") + '_' + str(network_type) + '_' + str(dim)+'.pkl'
+
+    hgcn_path = os.path.join(current_dir, './twitter_dataset/twitter_hgcn_' + str(treshold).replace(".","_") + '_' + str(network_type) + '_' + str(dim)+'.pkl')
+    
     print('hgcn dump: ', hgcn_path)
     with open(hgcn_path, 'wb') as out_file:
         adj_dict['u']['u'] = adj_dict['u']['u'].to_dense()
