@@ -97,7 +97,10 @@ def exec_train(network_type, dim):
 
         hid_layer_dim = [64,32,16,8]  # imdb3228
         epochs = 3
-        label, ft_dict, adj_dict = load_twitter(network_type, dim)
+
+        global label, ft_dict, adj_dict
+        label, ft_dict, adj_dict = load_twitter()
+
         output_layer_shape = dict.fromkeys(ft_dict.keys(), 2)
 
         layer_shape = []
@@ -109,6 +112,8 @@ def exec_train(network_type, dim):
 
         # Model and optimizer
         net_schema = dict([(k, list(adj_dict[k].keys())) for k in adj_dict.keys()])
+        
+        global model
         model = HGCN(
             net_schema=net_schema,
             layer_shape=layer_shape,
@@ -116,6 +121,8 @@ def exec_train(network_type, dim):
             type_fusion=type_fusion,
             type_att_size=type_att_size,
         )
+
+        global optimizer
         optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
 
         if cuda and torch.cuda.is_available():
