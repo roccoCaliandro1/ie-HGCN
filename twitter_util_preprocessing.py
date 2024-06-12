@@ -50,8 +50,9 @@ def load_twitter(network_type, dim, treshold=-1):
     full_features = full_features[:,1:]
 
 	# load the adjacency matrices, created during the preprocessing phase
-    with open(path+'twitter_sp_uu_' + 
-              str(treshold).replace(".","_") + '_' + network_type + '_adj_mats.pkl', 'rb') as in_file:
+    file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_sp_uu_' +
+				str(treshold).replace(".","_") + '_' + network_type + '_adj_mats.pkl')
+    with open(file_path, 'rb') as in_file:
         (sp_A_uu_sn) = pickle.load(in_file)
 
     A_uu_sn = sp_A_uu_sn.tocsr()
