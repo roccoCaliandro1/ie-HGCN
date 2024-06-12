@@ -60,7 +60,7 @@ def test():
     now = datetime.now()
     string = now.strftime('%Y-%m-%d %H:%M:%S').replace(" ", "-").replace(":", "-")
 
-    with open("output_twitter/out_" + string + "_XXX_YYY.txt", "wb") as fOut:
+    with open("output_twitter/out_" + string + "_"+network_type+"_"+str(dim)+".txt", "wb") as fOut:
         # Writing data to a file
         fOut.write(('test micro f1 u: {:.4f}'.format(f1_micro_test_u.item())).encode('utf-8'))
         fOut.write(('\n' + 'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item())).encode('utf-8'))
@@ -70,7 +70,11 @@ def test():
 
     return (f1_micro_test_u, f1_macro_test_u)
 
-def exec_train(network_type, dim):
+def exec_train(network_type_in, dim_in):
+    global network_type, dim
+    network_type = network_type_in
+    dim = dim_in
+
     cuda = True # Enables CUDA training.
     lr = 0.01 # Initial learning rate.c
     weight_decay = 5e-4 # Weight decay (L2 loss on parameters).
@@ -93,7 +97,7 @@ def exec_train(network_type, dim):
         print('type att size: ', type_att_size)
 
         hid_layer_dim = [64,32,16,8]  # imdb3228
-        epochs = 3
+        epochs = 512
 
         global label, ft_dict, adj_dict
         label, ft_dict, adj_dict = load_twitter(network_type, dim)

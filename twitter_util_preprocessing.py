@@ -23,15 +23,16 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
     return torch.sparse.FloatTensor(indices, values, shape)
 
 def load_twitter(network_type, dim):
-    path='./twitter_dataset/'
-	
+    path='twitter_dataset/'
+
+    path_embeddings='twitter_dataset/embedded_datasets/'+str(dim)+'_dim/'
     # load the train embeddings file, created during the preprocessing phase
-    with open('{}train_embeddings_'+str(dim)+'.pkl'.format(path), 'rb') as in_file:
+    with open(path_embeddings+'train_embeddings_'+str(dim)+'.pkl', 'rb') as in_file:
         u_ft_train = pickle.load(in_file)
         
 
     # load the test embeddings file, created during the preprocessing phase
-    with open('{}test_embeddings_'+str(dim)+'.pkl'.format(path), 'rb') as in_file:
+    with open(path_embeddings+'/test_embeddings_'+str(dim)+'.pkl', 'rb') as in_file:
         u_ft_test = pickle.load(in_file)
 
     #join the train and test embeddings along with thier userIds    
@@ -47,7 +48,7 @@ def load_twitter(network_type, dim):
     full_features = full_features[:,1:]
 
 	# load the adjacency matrices, created during the preprocessing phase
-    with open('{}twitter_sp_uu_'+str(network_type)+'_adj_mats.pkl'.format(path), 'rb') as in_file:
+    with open(path+'twitter_sp_uu_'+str(network_type)+'_adj_mats.pkl', 'rb') as in_file:
         (sp_A_uu_sn) = pickle.load(in_file)
 
     A_uu_sn = sp_A_uu_sn.tocsr()
