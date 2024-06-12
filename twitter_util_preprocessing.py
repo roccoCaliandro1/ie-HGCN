@@ -22,8 +22,6 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
     shape = torch.Size(sp_coo_mat.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
 
-
-
 def load_twitter(network_type, dim):
     path='./twitter_dataset/'
 	

@@ -6,15 +6,11 @@ import torch
 import os
 from sklearn.feature_extraction.text import HashingVectorizer, TfidfTransformer
 
-
-
 def row_normalize(mat):
     """Row-normalize matrix"""
     rowsum = mat.sum(1)
     rowsum[rowsum == 0.] = 0.01
     return mat / rowsum
-
-
 
 def sp_coo_2_sp_tensor(sp_coo_mat):
     """Convert a scipy sparse matrix to a torch sparse tensor."""
@@ -22,8 +18,6 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
     values = torch.from_numpy(sp_coo_mat.data)
     shape = torch.Size(sp_coo_mat.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
-
-
 
 def load_twitter(network_type, dim):
 	current_dir = os.path.dirname(os.path.abspath(__file__))

@@ -3,14 +3,11 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 from sklearn.metrics import f1_score, classification_report
-
 import warnings
 import sklearn.exceptions
 warnings.filterwarnings("ignore", category=sklearn.exceptions.UndefinedMetricWarning)
-
 from datetime import datetime
 import time
-
 from util_twitter import *
 from model import HGCN
 
@@ -99,7 +96,7 @@ def exec_train(network_type, dim):
         epochs = 3
 
         global label, ft_dict, adj_dict
-        label, ft_dict, adj_dict = load_twitter()
+        label, ft_dict, adj_dict = load_twitter(network_type, dim)
 
         output_layer_shape = dict.fromkeys(ft_dict.keys(), 2)
 
@@ -112,7 +109,7 @@ def exec_train(network_type, dim):
 
         # Model and optimizer
         net_schema = dict([(k, list(adj_dict[k].keys())) for k in adj_dict.keys()])
-        
+
         global model
         model = HGCN(
             net_schema=net_schema,
