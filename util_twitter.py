@@ -25,18 +25,12 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
 
 
 
-def load_twitter():
+def load_twitter(network_type, dim):
 	current_dir = os.path.dirname(os.path.abspath(__file__))
-	twitter_path = os.path.join(current_dir, 'twitter_dataset','twitter_hgcn.pkl')
+	twitter_path = os.path.join(current_dir, 'twitter_dataset','twitter_hgcn_'+str(network_type)+'_'+str(dim)+'.pkl')
 	print('twitter load: ', twitter_path, '\n')
 	with open(twitter_path, 'rb') as in_file:
 		(label, uu_dict, adj_dict_uu) = pickle.load(in_file)
 		adj_dict_uu['u']['u'] = adj_dict_uu['u']['u'].to_sparse()
 
 	return label, uu_dict, adj_dict_uu
-
-
-
-
-if __name__ == '__main__':
-	load_twitter()

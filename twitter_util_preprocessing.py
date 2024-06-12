@@ -24,16 +24,16 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
 
 
 
-def load_twitter():
+def load_twitter(network_type, dim):
     path='./twitter_dataset/'
 	
     # load the train embeddings file, created during the preprocessing phase
-    with open('{}train_embeddings.pkl'.format(path), 'rb') as in_file:
+    with open('{}train_embeddings_'+str(dim)+'.pkl'.format(path), 'rb') as in_file:
         u_ft_train = pickle.load(in_file)
         
 
     # load the test embeddings file, created during the preprocessing phase
-    with open('{}test_embeddings.pkl'.format(path), 'rb') as in_file:
+    with open('{}test_embeddings_'+str(dim)+'.pkl'.format(path), 'rb') as in_file:
         u_ft_test = pickle.load(in_file)
 
     #join the train and test embeddings along with thier userIds    
@@ -49,7 +49,7 @@ def load_twitter():
     full_features = full_features[:,1:]
 
 	# load the adjacency matrices, created during the preprocessing phase
-    with open('{}twitter_sp_uu_sn_adj_mats.pkl'.format(path), 'rb') as in_file:
+    with open('{}twitter_sp_uu_'+str(network_type)+'_adj_mats.pkl'.format(path), 'rb') as in_file:
         (sp_A_uu_sn) = pickle.load(in_file)
 
     A_uu_sn = sp_A_uu_sn.tocsr()
@@ -78,13 +78,9 @@ def load_twitter():
 
 	# hgcn write
 	# Save Processed Data for Heterogeneous Graph Convolutional Networks (HGCN):
-    hgcn_path = './twitter_dataset/twitter_hgcn.pkl'
+    hgcn_path = './twitter_dataset/twitter_hgcn_'+str(network_type)+'_'+str(dim)+'.pkl'
     print('hgcn dump: ', hgcn_path)
     with open(hgcn_path, 'wb') as out_file:
         adj_dict['u']['u'] = adj_dict['u']['u'].to_dense()
      
         pickle.dump((label, ft_dict, adj_dict), out_file)
-    
-
-if __name__ == '__main__':
-	load_twitter()	

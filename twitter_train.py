@@ -73,8 +73,7 @@ def test():
 
     return (f1_micro_test_u, f1_macro_test_u)
 
-if __name__ == '__main__':
-
+def exec_train(network_type, dim):
     cuda = True # Enables CUDA training.
     lr = 0.01 # Initial learning rate.c
     weight_decay = 5e-4 # Weight decay (L2 loss on parameters).
@@ -98,7 +97,7 @@ if __name__ == '__main__':
 
         hid_layer_dim = [64,32,16,8]  # imdb3228
         epochs = 3
-        label, ft_dict, adj_dict = load_twitter()
+        label, ft_dict, adj_dict = load_twitter(network_type, dim)
         output_layer_shape = dict.fromkeys(ft_dict.keys(), 2)
 
         layer_shape = []
