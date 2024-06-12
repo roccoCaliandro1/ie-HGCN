@@ -6,18 +6,21 @@ import os
 import sys
 
 def launch_twitter_clean(network_type):
-	np.set_printoptions(threshold=np.inf)
+	#np.set_printoptions(threshold=np.inf)
 
 	# load data from txt
 	current_dir = os.path.dirname(os.path.abspath(__file__))
 
 	# load data from txt
 	sn_twitter_path = os.path.join(current_dir, 'twitter_dataset', 'full_'+ network_type + '_network.txt')
-	sn_uu = np.genfromtxt(sn_twitter_path, delimiter='\t', dtype=np.int32)
+	if(network_type == 'social'):
+		sn_uu = np.genfromtxt(sn_twitter_path, delimiter='\t', dtype=np.int32)
+	elif(network_type == 'spatial'):
+		sn_uu = np.genfromtxt(sn_twitter_path, delimiter='\t', dtype=np.float32)
 	print('user_user social network shape: ', sn_uu.shape)
 	# create ids with all the users by using the  entire network and by removing duplicates
-	sn_uu_0 = sn_uu[:, 0]
-	sn_uu_1 = sn_uu[:, 1]
+	sn_uu_0 = sn_uu[:, 0].astype(np.int32)
+	sn_uu_1 = sn_uu[:, 1].astype(np.int32)
 	sn_uu_ids = np.array(list(set(np.concatenate([sn_uu_0, sn_uu_1]))))
 	sn_uu_num = len(sn_uu_ids)
 
@@ -37,6 +40,8 @@ def launch_twitter_clean(network_type):
 	sp_A_uu_sn = sp.coo_matrix((data, (row, col)), shape=(full_label.shape[0], full_label.shape[0]))
 
 	print('number of unique users that partecipates in the '+network_type+' network: ', sn_uu_num, '\n')
+	print(sp_A_uu_sn)
+	print(sp_A_uu_sn.shape)
 
 	# save into twitter_sn_uu_ids.pkl all the user IDS
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_'+ network_type + '_uu_ids.pkl')
