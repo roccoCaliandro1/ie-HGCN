@@ -5,6 +5,10 @@ import os
 
 import sys
 
+
+def filter_array_with_treshold(array, treshold):
+	return array[array[:, 2] > treshold]
+
 def launch_twitter_clean(network_type, treshold=-1):
 	#np.set_printoptions(threshold=np.inf)
 
@@ -15,6 +19,10 @@ def launch_twitter_clean(network_type, treshold=-1):
 	sn_twitter_path = os.path.join(current_dir, 'twitter_dataset', 'full_'+ network_type + '_network.txt')
 	
 	sn_uu = np.genfromtxt(sn_twitter_path, delimiter='\t', dtype=np.float32)
+
+	if network_type == 'spatial':
+		# filter the array based on a treshold
+		sn_uu = filter_array_with_treshold(sn_uu, treshold)
 	
 	print('user_user social network shape: ', sn_uu.shape)
 	# create ids with all the users by using the  entire network and by removing duplicates
@@ -44,26 +52,26 @@ def launch_twitter_clean(network_type, treshold=-1):
 
 	# save into twitter_sn_uu_ids.pkl all the user IDS
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_' + 
-				str(treshold).replace(".","_") + network_type + '_uu_ids.pkl')
+				str(treshold).replace(".","_") + '_' + network_type + '_uu_ids.pkl')
 	with open(file_path, 'wb') as out_file:
 		pickle.dump((sn_uu_ids), out_file)
 
 	# save into twitter_sp_uu_sn_adj_mats.pkl all the sparse matrices created with col, row and data
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_sp_uu_' +
-				str(treshold).replace(".","_") + network_type + '_adj_mats.pkl')
+				str(treshold).replace(".","_") + '_' + network_type + '_adj_mats.pkl')
 	with open(file_path, 'wb') as out_file:
 		pickle.dump((sp_A_uu_sn), out_file)
 
     ###########################################################################################################
 	# From now on, we read the pickles just for checking
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_' + 
-				str(treshold).replace(".","_") + network_type + '_uu_ids.pkl')
+				str(treshold).replace(".","_") + '_' + network_type + '_uu_ids.pkl')
 	with open(file_path, 'rb') as in_file:
 		(pkl_sn_uu_ids) = pickle.load(in_file)
-	print('number of users partecipating in the ' + network_type+' network: ', len(pkl_sn_uu_ids))
+	print('number of users partecipating in the ' + '_' + network_type+' network: ', len(pkl_sn_uu_ids))
 
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_sp_uu_' + 
-				str(treshold).replace(".","_") + network_type +'_adj_mats.pkl')
+				str(treshold).replace(".","_") + '_' + network_type +'_adj_mats.pkl')
 	with open(file_path, 'rb') as in_file:
 		(pkl_sp_A_uu_sn) = pickle.load(in_file)
 	print('pkl_sp_A_uu_sn: ', pkl_sp_A_uu_sn.max(), pkl_sp_A_uu_sn.shape, type(pkl_sp_A_uu_sn))

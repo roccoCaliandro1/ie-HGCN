@@ -48,7 +48,8 @@ def load_twitter(network_type, dim, treshold=-1):
     full_features = full_features[:,1:]
 
 	# load the adjacency matrices, created during the preprocessing phase
-    with open(path+'twitter_sp_uu_'+str(network_type)+'_adj_mats.pkl', 'rb') as in_file:
+    with open(path+'twitter_sp_uu_' + 
+              str(treshold).replace(".","_") + '_' + network_type + '_adj_mats.pkl', 'rb') as in_file:
         (sp_A_uu_sn) = pickle.load(in_file)
 
     A_uu_sn = sp_A_uu_sn.tocsr()
@@ -77,7 +78,7 @@ def load_twitter(network_type, dim, treshold=-1):
 
 	# hgcn write
 	# Save Processed Data for Heterogeneous Graph Convolutional Networks (HGCN):
-    hgcn_path = './twitter_dataset/twitter_hgcn_'+str(network_type)+'_'+str(dim)+'.pkl'
+    hgcn_path = './twitter_dataset/twitter_hgcn_' + str(treshold).replace(".","_") + '_' + str(network_type) + '_' + str(dim)+'.pkl'
     print('hgcn dump: ', hgcn_path)
     with open(hgcn_path, 'wb') as out_file:
         adj_dict['u']['u'] = adj_dict['u']['u'].to_dense()
