@@ -36,7 +36,7 @@ def launch_twitter_clean(network_type):
 	full_label = np.genfromtxt(full_label_path, delimiter=',', dtype=np.int32)
 	sp_A_uu_sn = sp.coo_matrix((data, (row, col)), shape=(full_label.shape[0], full_label.shape[0]))
 
-	print('number of unique users that partecipates in the social network: ', sn_uu_num, '\n')
+	print('number of unique users that partecipates in the '+network_type+' network: ', sn_uu_num, '\n')
 
 	# save into twitter_sn_uu_ids.pkl all the user IDS
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_'+ network_type + '_uu_ids.pkl')
@@ -53,7 +53,7 @@ def launch_twitter_clean(network_type):
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_' + network_type + '_uu_ids.pkl')
 	with open(file_path, 'rb') as in_file:
 		(pkl_sn_uu_ids) = pickle.load(in_file)
-	print('number of users partecipating in the social network: ', len(pkl_sn_uu_ids))
+	print('number of users partecipating in the '+network_type+' network: ', len(pkl_sn_uu_ids))
 
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_sp_uu_'+ network_type +'_adj_mats.pkl')
 	with open(file_path, 'rb') as in_file:
