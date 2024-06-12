@@ -39,7 +39,7 @@ def train(epoch):
             'train macro f1 u: {:.4f}'.format(f1_macro_train_u.item()),
         )
 
-def test():
+def test(treshold=-1):
     model.eval()
     logits, embd = model(ft_dict, adj_dict)
 
@@ -49,7 +49,7 @@ def test():
     y_test_u = label['u'][0][idx_test_u]
     f1_micro_test_u = f1_score(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1), average='micro')
     f1_macro_test_u = f1_score(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1), average='macro')
-    
+
     print(classification_report(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1)))
 
     print(
@@ -60,7 +60,7 @@ def test():
     now = datetime.now()
     string = now.strftime('%Y-%m-%d %H:%M:%S').replace(" ", "-").replace(":", "-")
 
-    with open("output_twitter/out_" + string + "_"+network_type+"_"+str(dim)+".txt", "wb") as fOut:
+    with open("output_twitter/out_" + string + "_"+network_type+"_"+str(dim)+ '_' + treshold + ".txt", "wb") as fOut:
         # Writing data to a file
         fOut.write(('test micro f1 u: {:.4f}'.format(f1_micro_test_u.item())).encode('utf-8'))
         fOut.write(('\n' + 'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item())).encode('utf-8'))
@@ -74,6 +74,7 @@ def exec_train(network_type_in, dim_in, treshold=-1):
     global network_type, dim
     network_type = network_type_in
     dim = dim_in
+    treshold = treshold
 
     cuda = True # Enables CUDA training.
     lr = 0.01 # Initial learning rate.c
@@ -141,7 +142,7 @@ def exec_train(network_type_in, dim_in, treshold=-1):
         for epoch in range(epochs):
             train(epoch)
 
-        (micro_f1, macro_f1) = test()
+        (micro_f1, macro_f1) = test(treshold)
 
         t_end = time.time()
         print('Total time: ', t_end - t_start)
