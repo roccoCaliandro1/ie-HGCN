@@ -60,7 +60,7 @@ def test(treshold=-1):
     now = datetime.now()
     string = now.strftime('%Y-%m-%d %H:%M:%S').replace(" ", "-").replace(":", "-")
 
-    with open("output_twitter/out_" + string + "_"+network_type+"_"+str(dim)+ '_' + treshold + ".txt", "wb") as fOut:
+    with open("output_twitter/out_" + string + "_"+network_type+"_"+str(dim)+ '_' + str(treshold) + ".txt", "wb") as fOut:
         # Writing data to a file
         fOut.write(('test micro f1 u: {:.4f}'.format(f1_micro_test_u.item())).encode('utf-8'))
         fOut.write(('\n' + 'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item())).encode('utf-8'))
