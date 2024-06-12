@@ -5,7 +5,9 @@ from twitter_train import exec_train
 if __name__ == '__main__':
     # We are going here to launch the first twitter preprocessing
     launch_twitter_clean('social')
-    launch_twitter_clean('spatial', 0.5)
+    launch_twitter_clean('spatial', 0)
+    launch_twitter_clean('spatial', 0.49)
+    launch_twitter_clean('spatial', 0.69)
 
     # We are going here to launch the second twitter preprocessing
     load_twitter('social', 128)
@@ -13,10 +15,18 @@ if __name__ == '__main__':
     load_twitter('social', 512)
     load_twitter('social', 768)
 
-    load_twitter('spatial', 128, 0.5)
-    load_twitter('spatial', 256, 0.5)
-    load_twitter('spatial', 512, 0.5)
-    load_twitter('spatial', 768, 0.5)
+    load_twitter('spatial', 128, 0)
+    load_twitter('spatial', 256, 0)
+    load_twitter('spatial', 512, 0)
+    load_twitter('spatial', 768, 0)
+    load_twitter('spatial', 128, 0.49)
+    load_twitter('spatial', 256, 0.49)
+    load_twitter('spatial', 512, 0.49)
+    load_twitter('spatial', 768, 0.49)
+    load_twitter('spatial', 128, 0.69)
+    load_twitter('spatial', 256, 0.69)
+    load_twitter('spatial', 512, 0.69)
+    load_twitter('spatial', 768, 0.69)
     
     # We are going here to launch the twitter train and collect the results
     exec_train('social', 128)  
@@ -24,7 +34,15 @@ if __name__ == '__main__':
     exec_train('social', 512)
     exec_train('social', 768)
 
-    exec_train('spatial', 128, 0.5)  
-    exec_train('spatial', 256, 0.5)
-    exec_train('spatial', 512, 0.5)
-    exec_train('spatial', 768, 0.5)
+    exec_train('spatial', 128, 0)  
+    exec_train('spatial', 256, 0)
+    exec_train('spatial', 512, 0)
+    exec_train('spatial', 768, 0)
+    exec_train('spatial', 128, 0.49)  
+    exec_train('spatial', 256, 0.49)
+    exec_train('spatial', 512, 0.49)
+    exec_train('spatial', 768, 0.49)
+    exec_train('spatial', 128, 0.69)  
+    exec_train('spatial', 256, 0.69)
+    exec_train('spatial', 512, 0.69)
+    exec_train('spatial', 768, 0.69)
