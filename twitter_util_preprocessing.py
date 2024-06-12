@@ -22,7 +22,7 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
     shape = torch.Size(sp_coo_mat.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
 
-def load_twitter(network_type, dim):
+def load_twitter(network_type, dim, treshold=-1):
     path='twitter_dataset/'
 
     path_embeddings='twitter_dataset/embedded_datasets/'+str(dim)+'_dim/'

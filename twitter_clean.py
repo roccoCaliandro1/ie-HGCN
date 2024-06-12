@@ -5,7 +5,7 @@ import os
 
 import sys
 
-def launch_twitter_clean(network_type, threshold=-1):
+def launch_twitter_clean(network_type, treshold=-1):
 	#np.set_printoptions(threshold=np.inf)
 
 	# load data from txt
@@ -44,26 +44,26 @@ def launch_twitter_clean(network_type, threshold=-1):
 
 	# save into twitter_sn_uu_ids.pkl all the user IDS
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_' + 
-				str(threshold).replace(".","_") + network_type + '_uu_ids.pkl')
+				str(treshold).replace(".","_") + network_type + '_uu_ids.pkl')
 	with open(file_path, 'wb') as out_file:
 		pickle.dump((sn_uu_ids), out_file)
 
 	# save into twitter_sp_uu_sn_adj_mats.pkl all the sparse matrices created with col, row and data
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_sp_uu_' +
-				str(threshold).replace(".","_") + network_type + '_adj_mats.pkl')
+				str(treshold).replace(".","_") + network_type + '_adj_mats.pkl')
 	with open(file_path, 'wb') as out_file:
 		pickle.dump((sp_A_uu_sn), out_file)
 
     ###########################################################################################################
 	# From now on, we read the pickles just for checking
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_' + 
-				str(threshold).replace(".","_") + network_type + '_uu_ids.pkl')
+				str(treshold).replace(".","_") + network_type + '_uu_ids.pkl')
 	with open(file_path, 'rb') as in_file:
 		(pkl_sn_uu_ids) = pickle.load(in_file)
 	print('number of users partecipating in the ' + network_type+' network: ', len(pkl_sn_uu_ids))
 
 	file_path = os.path.join(current_dir, 'twitter_dataset', 'twitter_sp_uu_' + 
-				str(threshold).replace(".","_") + network_type +'_adj_mats.pkl')
+				str(treshold).replace(".","_") + network_type +'_adj_mats.pkl')
 	with open(file_path, 'rb') as in_file:
 		(pkl_sp_A_uu_sn) = pickle.load(in_file)
 	print('pkl_sp_A_uu_sn: ', pkl_sp_A_uu_sn.max(), pkl_sp_A_uu_sn.shape, type(pkl_sp_A_uu_sn))
