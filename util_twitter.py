@@ -19,9 +19,10 @@ def sp_coo_2_sp_tensor(sp_coo_mat):
     shape = torch.Size(sp_coo_mat.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
 
-def load_twitter(network_type, dim):
+def load_twitter(network_type, dim, treshold):
 	current_dir = os.path.dirname(os.path.abspath(__file__))
-	twitter_path = os.path.join(current_dir, 'twitter_dataset','twitter_hgcn_'+str(network_type)+'_'+str(dim)+'.pkl')
+	twitter_path = os.path.join(current_dir, 'twitter_dataset','twitter_hgcn_'+
+        str(treshold).replace(".","_") + '_' + str(network_type) + '_' + str(dim) + '.pkl')
 	print('twitter load: ', twitter_path, '\n')
 	with open(twitter_path, 'rb') as in_file:
 		(label, uu_dict, adj_dict_uu) = pickle.load(in_file)

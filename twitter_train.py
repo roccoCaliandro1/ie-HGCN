@@ -70,7 +70,7 @@ def test():
 
     return (f1_micro_test_u, f1_macro_test_u)
 
-def exec_train(network_type_in, dim_in):
+def exec_train(network_type_in, dim_in, treshold=-1):
     global network_type, dim
     network_type = network_type_in
     dim = dim_in
@@ -97,10 +97,10 @@ def exec_train(network_type_in, dim_in):
         print('type att size: ', type_att_size)
 
         hid_layer_dim = [64,32,16,8]  # imdb3228
-        epochs = 512
+        epochs = 250
 
         global label, ft_dict, adj_dict
-        label, ft_dict, adj_dict = load_twitter(network_type, dim)
+        label, ft_dict, adj_dict = load_twitter(network_type, dim, treshold)
 
         output_layer_shape = dict.fromkeys(ft_dict.keys(), 2)
 

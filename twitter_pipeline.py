@@ -19,9 +19,12 @@ if __name__ == '__main__':
     load_twitter('spatial', 768, 0.5)
     
     # We are going here to launch the twitter train and collect the results
-    '''
     exec_train('social', 128)  
     exec_train('social', 256)
     exec_train('social', 512)
     exec_train('social', 768)
-    '''
+
+    exec_train('spatial', 128, 0.5)  
+    exec_train('spatial', 256, 0.5)
+    exec_train('spatial', 512, 0.5)
+    exec_train('spatial', 768, 0.5)
