@@ -5,7 +5,7 @@ from twitter_train import exec_train
 if __name__ == '__main__':
     # We are going here to launch the first twitter preprocessing
     launch_twitter_clean('social')
-    #launch_twitter_clean('spatial')
+    launch_twitter_clean('spatial', 0.5)
 
     # We are going here to launch the second twitter preprocessing
     load_twitter('social', 128)
