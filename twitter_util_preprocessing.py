@@ -54,7 +54,6 @@ def load_twitter(network_type, dim, treshold=-1):
 
     A_uu_sn = sp_A_uu_sn.tocsr()
 
-    # m_label contains only values between 0 and 3 that are the indices of the genres related to the movies
     current_dir = os.path.dirname(os.path.abspath(__file__))
     full_label_path = os.path.join(current_dir, 'twitter_dataset', 'full_label.csv')
     full_label = np.genfromtxt(full_label_path, delimiter=',', dtype=np.int32)
@@ -74,7 +73,6 @@ def load_twitter(network_type, dim, treshold=-1):
 
     adj_dict = {'u':{}}
     adj_dict['u']['u'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_uu_sn)))
-    # adj_dict['a']['m'] = sp_coo_2_sp_tensor(sp.coo_matrix(row_normalize(A_m_a.transpose())))
 
 	# hgcn write
 	# Save Processed Data for Heterogeneous Graph Convolutional Networks (HGCN):

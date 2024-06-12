@@ -24,7 +24,7 @@ def launch_twitter_clean(network_type, treshold=-1):
 		# filter the array based on a treshold
 		sn_uu = filter_array_with_treshold(sn_uu, treshold)
 	
-	print('user_user social network shape: ', sn_uu.shape)
+	print('user_user ' + network_type + ' network shape: ', sn_uu.shape)
 	# create ids with all the users by using the  entire network and by removing duplicates
 	sn_uu_0 = sn_uu[:, 0].astype(np.int32)
 	sn_uu_1 = sn_uu[:, 1].astype(np.int32)

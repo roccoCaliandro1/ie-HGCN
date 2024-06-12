@@ -39,7 +39,7 @@ def train(epoch):
             'train macro f1 u: {:.4f}'.format(f1_macro_train_u.item()),
         )
 
-def test(treshold=-1):
+def test():
     model.eval()
     logits, embd = model(ft_dict, adj_dict)
 
@@ -70,11 +70,11 @@ def test(treshold=-1):
 
     return (f1_micro_test_u, f1_macro_test_u)
 
-def exec_train(network_type_in, dim_in, treshold=-1):
-    global network_type, dim
+def exec_train(network_type_in, dim_in, treshold_dim=-1):
+    global network_type, dim, treshold
     network_type = network_type_in
     dim = dim_in
-    treshold = treshold
+    treshold = treshold_dim
 
     cuda = True # Enables CUDA training.
     lr = 0.01 # Initial learning rate.c
@@ -142,7 +142,7 @@ def exec_train(network_type_in, dim_in, treshold=-1):
         for epoch in range(epochs):
             train(epoch)
 
-        (micro_f1, macro_f1) = test(treshold)
+        (micro_f1, macro_f1) = test()
 
         t_end = time.time()
         print('Total time: ', t_end - t_start)
