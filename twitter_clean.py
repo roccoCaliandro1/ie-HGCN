@@ -35,8 +35,10 @@ def launch_twitter_clean(network_type, treshold=-1):
 	row = sn_uu_0
 	col = sn_uu_1
 
-	# data is 1 for social network, while for spatial network is the distance
-	if(network_type == 'social'):
+	# data is 0 when no network is involved, 1 for social network, while for spatial network is the distance
+	if(network_type == 'no'):
+		data = np.zeros(row.shape[0], dtype=np.float32)
+	elif(network_type == 'social'):
 		data = np.ones(row.shape[0], dtype=np.float32)
 	elif(network_type == 'spatial'):
 		data = sn_uu[:, 2].astype(np.float32)
