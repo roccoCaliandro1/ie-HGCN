@@ -50,6 +50,16 @@ def test():
     f1_micro_test_u = f1_score(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1), average='micro')
     f1_macro_test_u = f1_score(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1), average='macro')
 
+    diff_positions_tmp = (y_test_u.data.cpu() != x_test_u.data.cpu().argmax(1)).nonzero(as_tuple=True)[0]
+    diff_positions = diff_positions_tmp.tolist()
+
+    '''print(diff_positions)
+    print(len(diff_positions))
+    print(1 - len(diff_positions)/len(y_test_u.data.cpu()))
+
+    print(y_test_u.data.cpu()[diff_positions])
+    print(x_test_u.data.cpu().argmax(1).data.cpu()[diff_positions])'''
+
     print(classification_report(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1)))
 
     print(
@@ -68,6 +78,10 @@ def test():
         fOut.write(('\n' + 'test macro f1 u: {:.4f}'.format(f1_macro_test_u.item())).encode('utf-8'))
         fOut.write(('\n\n ********** \n').encode('utf-8'))
         fOut.write((classification_report(y_test_u.data.cpu(), x_test_u.data.cpu().argmax(1))).encode('utf-8'))
+        for i in diff_positions:
+            prediction = x_test_u.data.cpu().argmax(1).data.cpu()[i].item()
+            true_label = y_test_u.data.cpu()[i].item()
+            fOut.write((f'\n user id: {i} predicted {prediction} instead of {true_label}').encode('utf-8'))
 
 
     return (f1_micro_test_u, f1_macro_test_u)
