@@ -5,11 +5,11 @@ from word2vec_train import trainWord2Vec
 from compute_embeddings import computeW2Vembeddings, twitter4SSEEmbeddings
 
 if __name__ == '__main__':
-    trainW2v = False
+    trainW2v = True
     computeW2vEmbeddings = True
-    cleaning = False
-    loadPklCompute = False
-    trainModel = False
+    cleaning = True
+    loadPklCompute = True
+    trainModel = True
 
     #train the word2vec model
     if trainW2v:
