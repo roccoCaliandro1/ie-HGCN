@@ -51,7 +51,7 @@ with open(output_file, 'w') as f_out:
         filtered_tfidf = [(term, score) for term, score in sorted_tfidf if term not in common_terms]
 
         # Write TF-IDF scores for the label to the output file
-        f_out.write(f"TF-IDF scores for label '{label}':\n\n")
+        f_out.write(f"TF-IDF scores for label '{label}':\n")
         for term, score in filtered_tfidf[:100]:
             f_out.write(f"{term}: {score:.8f}\n")
         f_out.write("\n")
