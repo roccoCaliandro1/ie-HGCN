@@ -1,5 +1,4 @@
 TF-IDF scores for label 'safe':
-
 competencies: 0.00095331
 adopters: 0.00086030
 peony: 0.00080217
@@ -102,7 +101,6 @@ demystified: 0.00025576
 implementations: 0.00025576
 
 TF-IDF scores for label 'risky':
-
 drunker: 0.00028062
 gayness: 0.00026585
 ayatollahs: 0.00022154
