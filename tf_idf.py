@@ -28,5 +28,5 @@ with open(output_file, 'w') as f_out:
         # Write TF-IDF scores for the tweet to the output file
         f_out.write(f"TF-IDF scores for tweet {i+1} (label '{label}'):\n")
         for term, score in sorted_tfidf[:10]:
-            f_out.write(f"{term}: {score:.4f}\n")
+            f_out.write(f"{term}: {score:.8f}\n")
         f_out.write("\n")
