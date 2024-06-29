@@ -29,7 +29,7 @@ Run the following scripts in order:
 
 This dummy run serves as a small, runnable example and a reference for newcomers wanting to adapt the model to new datasets.
 
-**Step 3: Run the Experiments on the Twitter Dataset**
+**Step 3: Run the Experiments on the X Dataset**
 
 1. Extract the entire content of the file `twitter_dataset/twitter_daset.7z` into the folder `twitter_dataset`.
 2. Execute the file `twitter_pipeline.py`. For the first run, ensure all boolean settings are set to `True` to compute all preliminary steps.
