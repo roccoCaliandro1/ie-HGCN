@@ -1,4 +1,4 @@
-# A Twitter Dataset Experiment on ie-HGCN
+# A X (Twitter) Dataset Experiment on ie-HGCN
 
 Discover the original model source [here](https://github.com/kepsail/ie-HGCN/).
 
